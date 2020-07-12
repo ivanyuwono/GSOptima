@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+    @using GSOptima.ViewModels;
+    @using GSOptima.Code;
+@{
+ 
+}
+
+
+<br />
+@*untuk menampilkan message box*@
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+
+@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Medium })
+
+@*<div>
+    <label>Stock Code : </label>
+        <input type="text" id="txtStockId" class="form-control-static" style="width:70px"/>
+    <select id="optData" class="form-control-static" style="width:80px">
+        <option value="1">  1 Month</option>
+        <option value="3">3 Months</option>
+        <option value="6">6 Months</option>
+        <option value="12">1 Year</option>
+        <option value="0">All</option>
+    </select>
+    <button id="btnChart" class="btn btn-primary">Search</button>
+
+</div>*@
+@*<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <span class="input-group" style="max-width:180px;left:0px; position:absolute">
+                <input type="text" id="txtStockId" class="form-control" placeholder="Type Stock Code..">
+                <span class="input-group-btn">
+                    <button id="btnChart" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
+                    </button>
+
+                </span>
+            </span>
+
+        </div>
+        <div class="col-xs-7" style="border-color:aqua">
+            <div class="input-group-btn" >
+                <button id="btn1M" class="btn btn-default ">
+                    1M
+                </button>
+                <button id="btn3M" class="btn btn-default  ">
+                    3M
+                </button>
+                <button id="btn6M" class="btn btn-default  ">
+                    6M
+                </button>
+                <button id="btn1Y" class="btn btn-default  ">
+                    1Y
+                </button>
+            </div>
+        </div>
+    </div>
+</div>*@
+@*<div id="mask" class="mask">
+    <img src="~/images/ajax-loader.gif">
+    Processing
+</div>*@
+
+@await Html.PartialAsync("_Loading")
+
+
+<div id="placeholder" >
+
+    @await Component.InvokeAsync("StockChart", new {parameter = new ChartViewModel() {  StockName = "XXXX", StockID = "AALI", NumberOfDays = 180, IsTextBoxVisible=true, IsModalDialog=false } } )
+    @*@await Component.InvokeAsync("StockChart")*@
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+ 
+@*<script src="~/js/d3.js"></script>*@
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="~/js/chart.js"></script>
+<script type="text/javascript">
+
+   
+    //event handler button add/remove watchlist
+    $('#btnAddToStock, #btnAddToStockxs').on('click', function () {
+
+        AddRemoveWatchlist();
+    });
+
+
+    </script>
+}

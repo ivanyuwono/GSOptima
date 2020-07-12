@@ -1,0 +1,211 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@*untuk menampilkan message box*@
+<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+@*<div id="mask" class="mask panel panel-default">
+    <img src="~/images/ajax-loader.gif">
+    Processing
+</div>*@
+
+@*<div id="mask" class="mask">
+    <img src="~/images/ajax-loader.gif">
+    Processing
+</div>*@
+@await Html.PartialAsync("_Loading")
+
+
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <h2>Daily Data Upload</h2>
+    </div>
+    <div class="alert"><h4>Upload file csv dengan struktur : Stock Code|Stock Name|Open Price|High|Low|Close|Volume|Frequency</h4></div> 
+   
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-8">
+                <section>
+                    <form asp-controller="StockPrices" asp-action="DailyUploadNonAjax" method="post" enctype="multipart/form-data" class="form-horizontal" id="formupload">
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">File</label>
+                            <div class="col-md-10">
+                                <input type="file" name="files" id="files" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Date</label>
+
+
+                            <div class="col-md-10">
+                                <input type="date" name="date" id="date" class="form-control" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="button" id="btnsubmit" value="Upload"  class="btn btn-primary">Upload</button>
+                                <button type="submit" id="btnprocess" value="Upload2" class="btn btn-primary">New Upload</button>
+                                @*<button type="button" id="btnsubmit" value="Upload" class="btn btn-primary">
+            Upload
+            <img src="~/images/ajax-loader1.gif" class="spinner" />
+        </button>*@
+                            </div>
+                        </div>
+
+
+                    </form>
+                </section>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+    
+    @*<form method="post" enctype="multipart/form-data" >
+            <div class=form-horizontal>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label class="control-label">Upload one or more files using this form :</label>
+                        <input type="file" name="files" multiple />
+                        <br />
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-10">
+                        <button type="button" id="btnsubmit" value="Upload" class="btn btn-primary" style="width:100px">
+                            <img src="~/images/ajax-loader1.gif" class="spinner" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>*@
+
+    @*<form method="post" enctype="multipart/form-data" asp-controller="StockPrices" asp-action="DailyUpload">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>Upload one or more files using this form:</p>
+                    <input type="file" id="files" name="files" multiple />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" />
+                </div>
+            </div>
+        </form>*@
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                //menampilkan tanggal hari ini
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+                var yyyy = today.getFullYear();
+                if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                $('#date').attr('value', today);
+
+
+                $('#btnsubmit').click(function () {
+
+                //$('#formupload').submit(function(e) {
+    
+                    //$('#List').mask("waiting ...");
+                    //$('#mask').show();
+                    //$('.spinner').show();
+                    //$('#btnsubmit').pr
+                    //$("#btnsubmit").button("option", "disabled", true);
+                    //e.preventDefault();
+
+                    var fileUpload = $("#files").get(0);
+                    
+
+                    var files = fileUpload.files;
+
+                    if (files.length == 0)
+                    {
+                        displayModal('Error', 'There is no file chosen', '/Common/ShowModal/');
+                        return;
+
+                    }
+
+                    //data adalah form data yang berisi file dan tanggal
+                    var data = new FormData();
+                    for (var i = 0; i < files.length ; i++) {
+                        //data.append(files[i].name, files[i]);
+                        data.append('files', files[i]);
+  
+                    }
+   
+
+                    data.append('date', $('#date').val());
+          
+                    $(this).prop('disabled', true);
+                    $('#mask').show();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/StockPrices/DailyUploadAjax/',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        //contentType: 'application/json',
+                        //cache: false,
+                        success: function (result) {
+                            //$('#List').unmask("waiting ...");
+                            //load returned data inside contentFrame DIV
+                            //alert(result);
+                            if (result) {
+                                //$('#spanValidation').text(result);
+
+                                if (result.substring(0, 2) == "I-")
+                                    displayModal('Information', result.substring(2), '/Common/ShowModal/');
+                                else
+                                    displayModal('Error', result.substring(2), '/Common/ShowModal/');
+                            }
+                            else {
+                                alert(result);
+                                displayModal('Information', 'Upload succesful', '/Common/ShowModal/');
+
+                            }
+                            //$('#mask').hide();
+
+                            //$('.spinner').hide();
+                            $('#mask').hide();
+                            $('#btnsubmit').prop('disabled', false);
+                        }
+                    });
+
+                });
+
+
+            });
+
+
+        </script>
+
+    }

@@ -1,0 +1,112 @@
+@{
+    ViewData["Title"] = "Create";
+}
+
+@using GSOptima.ViewModels
+@using GSOptima.Code
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        function refreshStockList(search) {
+
+            $.ajax({
+                url: '/StockWatchList/SearchStock/',
+                //data: { filter: $('#filter').val(), page: '', sort:'', nowsort:''},
+                data: { filter: search },
+                type: 'POST',
+                //cache: false,
+                success: function (result) {
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+                    //alert("success");
+                    $('#stockList').html(result);
+                    //$('#mask').hide();
+                }
+            });
+
+        };
+        $('#btnSearch').click(function () {
+
+            //$('#List').mask("waiting ...");
+            //$('#mask').show();
+            var search = $('#txtSearch').val();
+            $('#spanValidation').text('');
+            //alert(search);
+            refreshStockList(search);
+
+        });
+        $('#txtSearch').on('input propertychange paste', function () {
+            //$('#txtSearch').keypress(function () {
+
+            //$('#List').mask("waiting ...");
+            //$('#mask').show();
+            var search = $('#txtSearch').val();
+            $('#spanValidation').text('');
+            //alert(search);
+            //alert(search);
+            refreshStockList(search);
+
+        });
+
+        
+
+
+    });
+
+
+</script>
+
+@*untuk menampilkan message box*@
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Medium })
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add to watch list</h4>
+
+        </div>
+        <div class="modal-body">
+
+            @*<label>Search : </label>
+                <input type="text" id="txtSearch" class="form-control-static input-sm" />
+                <button id="btnSearch" class="btn btn-primary btn-sm">Search</button>*@
+            @*<div class="input-group" style="max-width:350px">
+                    <input type="text" id="txtSearch" class="form-control" placeholder="Search by name or code">
+                    <span class="input-group-btn">
+                        <button id="btnSearch" class="btn btn-default  ">
+                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
+                        </button>
+                    </span>
+
+                </div>*@
+            <span style="display:block;overflow:hidden">
+                <input type="text" class="form-control" id="txtSearch" style="width:100%; box-sizing:border-box;" placeholder="Search by name or code">
+            </span>
+            <br />
+            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <span class="text-danger field-validation-error"><span id="spanValidation"></span></span>*@
+
+            <div id="stockList">
+                @await Component.InvokeAsync("StockList", new { filter = "" })
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Back to watchlist</button>
+        </div>
+
+
+

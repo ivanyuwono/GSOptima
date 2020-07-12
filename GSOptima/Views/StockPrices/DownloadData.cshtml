@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@*untuk menampilkan message box*@
+<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+@await Html.PartialAsync("_Loading")
+
+
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <h2>Download Data</h2>
+    </div>
+    <div class="alert"><h4>Download Latest Price Data with format : Date; Stock; Open; High; Low; Close; Resist; Support; GSLine</h4></div> 
+   
+    <div class="panel-body">
+        <a class="btn btn-primary" asp-action="DownloadLatest">Download</a>
+        
+    </div>
+</div>
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        
+    }

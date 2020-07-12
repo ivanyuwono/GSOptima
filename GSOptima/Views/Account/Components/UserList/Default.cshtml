@@ -1,0 +1,127 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using GSOptima.ViewModels
+@model Paging<GSOptima.Models.AccountViewModels.RegisterViewModel>
+@functions{
+
+    public string OrderingClassName(string fieldname, string currentsort)
+
+    {
+        var currentfield = currentsort.Replace("_DESC", "");
+
+        if (currentfield == fieldname)
+        {
+            if (currentsort.Contains("_DESC"))
+                //return "glyphicon-triangle-bottom";
+                return "fa-sort-desc";
+            else
+                //return "glyphicon-triangle-top";
+                return "fa-sort-asc";
+        }
+        else
+            return "";
+            //return "fa-sort";
+    }
+
+        }
+
+
+
+@*<div class="table-responsive" data-pattern="priority-columns" data-add-focus-btn="false">*@
+    <table class="table table-hover table-footable">
+        <thead>
+            <tr>
+
+                @await Html.PartialAsync("_TableHeader",new TableHeader() {pagingAttribute = Model.attribute, sortBy = "Email", columnText = "Email" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Name", columnText = "Name" })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "StartDate", columnText = "Join Date", dataBreakpoint="xs md" })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "EndDate", columnText = "End Date", dataBreakpoint = "xs md" })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Roles", columnText = "Role", dataBreakpoint = "xs" })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "EmailConfirmed", columnText = "Email Confirmed", dataBreakpoint = "xs" })
+
+
+                <th data-breakpoints="xs md">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.data)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Roles)
+                        @*@foreach (var role in item.Roles)
+                        {
+                            <div> @role </div>
+                        }*@
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                    </td>
+                    <td>
+                        <a id="editUser" data-toggle="modal" asp-action="EditUser" asp-route-id="@item.Id" data-target="#modal-container" class="btn btn-primary">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a id="deleteUser" data-toggle="modal" asp-action="Delete" asp-route-id="@item.Id" data-target="#modal-container" class="btn btn-danger">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                        @if (!item.EmailConfirmed)
+                        {
+                        <a class="btn btn-success" id="btnEmail" aria-label="Send confirmation email"  value="@item.Id">
+                            <i class="glyphicon glyphicon-envelope"></i>  
+                        </a>
+                        }   
+                        @*<button value="@item.Id" id="btnEmail" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-registration-mark" /> Email
+                        </button>*@
+
+                        @*<div class="btn-group" role="group">
+                            <a asp-action="EditUser" asp-route-id="@item.Id" title="Modify User"><i class="glyphicon glyphicon-edit"></i>Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id" title="View Details"><i class="glyphicon glyphicon-option-vertical"></i></a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id" title="Delete User"><i class="glyphicon glyphicon-remove"></i>Delete</a> |
+                       </div>*@
+
+                        @*<button asp-action="EditUser" id="btnEdit" asp-route-id="@item.Id" value="@item.Id" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true">Edit</span>
+            </button>
+            <button type="submit" asp-action="Delete" id="btnDelete" asp-route-id="@item.Id" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>*@
+
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+
+                <td colspan="10">
+                    @await Component.InvokeAsync("Paging", new { pagingAttribute = Model.attribute })
+                </td>
+            </tr>
+
+        </tfoot>
+    </table>
+@*</div>*@

@@ -1,0 +1,33 @@
+﻿
+@model GSOptima.ViewModels.TableHeader
+
+
+@functions{
+
+    public string OrderingClassName(string fieldname, string currentsort)
+
+    {
+        var currentfield = currentsort.Replace("_DESC", "");
+
+        if (currentfield == fieldname)
+        {
+            if (currentsort.Contains("_DESC"))
+                //return "glyphicon-triangle-bottom";
+                return "fa-sort-desc";
+            else
+                //return "glyphicon-triangle-top";
+                return "fa-sort-asc";
+        }
+        else
+            return "";
+        //return "fa-sort";
+    }
+
+}
+
+
+<th data-breakpoints="@Model.dataBreakpoint" style="cursor: pointer;" onclick="paging(@Model.pagingAttribute.currentPage, '1', @Model.pagingAttribute.totalPage,'@Model.pagingAttribute.sorting', '@Model.pagingAttribute.filter', '@Model.sortBy', '@Model.pagingAttribute.url', '@Model.pagingAttribute.divName')">
+    @Model.columnText
+    @*<span style="opacity:0.5" class="pull-left glyphicon @OrderingClassName("Email", Model.attribute.sorting)"></span>*@
+    <i style="opacity:0.5" class="fa @OrderingClassName(Model.sortBy, Model.pagingAttribute.sorting) fa-lg pull-right"></i>
+</th>

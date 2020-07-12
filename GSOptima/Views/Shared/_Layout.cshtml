@@ -1,0 +1,156 @@
+﻿
+@using Microsoft.AspNetCore.Authorization;
+@inject IAuthorizationService AuthorizationService
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @*<title>@ViewData["Title"] - GS Optima</title>*@
+    <title>GS Optima</title>
+
+    <environment names="Development">
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+        @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">*@
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/theme.css" />
+        <!-- Optional theme -->
+        @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
+
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <link rel="stylesheet" href="~/css/footable.bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    </environment>
+    <environment names="Staging,Production">
+        @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+            asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+            asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+        @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">*@
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/theme.css" />
+        <!-- Optional theme -->
+        @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
+
+
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/light-bootstrap-dashboard.css" />*@
+
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+        <link rel="stylesheet" href="~/css/footable.bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    </environment>
+
+</head>
+<body>
+
+    <div class="navbar navbar-default    navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <img src="~/images/gsoptima.png" style="max-height:100%; max-width:100%" />
+                    @*GSOptima*@
+                </a>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAuthenticatedUser")).Succeeded)
+                    {
+                        @*<li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-controller="StockChart" asp-action="Index">Chart</a></li>
+                                    <li><a asp-area="" asp-controller="StockWatchList" asp-action="Index">Watchlist</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a  asp-controller="StockScreening" asp-action="Index">Screening</a></li>
+
+                                </ul>
+                            </li>*@
+                        <li><a asp-controller="StockChart" asp-action="Index">Chart</a></li>
+                        <li><a asp-controller="StockScreening" asp-action="Index">Screening</a></li>
+                        <li><a asp-area="" asp-controller="StockWatchList" asp-action="Index">Watchlist</a></li>
+
+                    }
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Account" asp-action="Index">User Management</a></li>
+                                @*<li><a asp-controller="Account" asp-action="Register">Register</a></li>*@
+                                <li role="separator" class="divider"></li>
+                                <li><a asp-area="" asp-controller="StockPrices" asp-action="DailyUpload">Stock Prices Upload</a></li>
+                                <li><a asp-area="" asp-controller="StockPrices" asp-action="DownloadData">Download Data</a></li>
+                                <li><a asp-area="" asp-controller="CorporateAction" asp-action="Index">Corporate Action</a></li>
+                            </ul>
+                        </li>
+                    }
+
+
+                </ul>
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            @*<p>&copy; 2017 - GSOptima</p>*@
+            <p><b>Powered by GaleriSaham.com</b></p>
+        </footer>
+    </div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>*@
+
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @*<script src="~/js/d3.js"></script>*@
+
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+
+        <script src="~/js/footable.js"></script>
+        @*<script src="~/js/chart.js"></script>*@
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        @*<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+            </script>*@
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+        @*<script src="~/js/d3.js" asp-append-version="false"></script>*@
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+
+        @*<script src="~/js/responsive-tables.js"></script>
+            <script src="~/js/rwd-table.js"></script>*@
+
+        <script src="~/js/footable.js"></script>
+        @*<script src="~/js/tablesaw-init.js"></script>
+            <script src="~/js/tablesaw.js"></script>*@
+        @*<script src="~/js/chart.js"></script>*@
+
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

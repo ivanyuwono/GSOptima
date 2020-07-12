@@ -1,0 +1,361 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    /*background-color: #40b5e5 ;*/
+    /*font-family: Calibri;*/
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    /*max-width: 1080px;*/
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* buttons and links extension to use brackets: [ click me ] */
+.btn-bracketed::before {
+    display:inline-block;
+    content: "[";
+    padding-right: 0.5em;
+}
+.btn-bracketed::after {
+    display:inline-block;
+    content: "]";
+    padding-left: 0.5em;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"]
+{
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+  /* Hide captions */
+  .carousel-caption {
+    display: none
+  }
+}
+
+@media screen and (max-width: 480px) {
+
+    table.custom {
+      border: 0;
+    }
+
+    table.custom thead {
+      display: none;
+    }
+
+    table.custom tr {
+      margin-bottom: 10px;
+      display: block;
+      border-bottom: 2px solid #ddd;
+    }
+
+    table.custom td {
+      display: block;
+      text-align: right;
+      font-size: 13px;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    table.custom td:last-child {
+      border-bottom: 0;
+    }
+
+    table.custom td:before {
+      content: attr(data-label);
+      float: left;
+      /*text-transform: uppercase;*/
+      font-weight: bold;
+    }
+  }
+
+
+.mask{
+  display: none; 
+  z-index:99999;
+  height:40px;
+  /*float:none;*/
+  text-align:center;
+  padding : 8px;
+  background-color: whitesmoke;
+  position: fixed;
+  width: 150px;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  /*position: relative;*/ /*required for z-index*/
+  /*z-index: 1000;*/ /*puts on top of everything*/
+}
+
+/*.mask.ajax{
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative; /*required for z-index
+  /*z-index: 1000;*/ /*puts on top of everything*/
+  /*background-color:aqua;*/
+  /*background-image: url("../images/banner1.svg");*/
+/*}*/
+
+.spinner { position: absolute; right: 5px; top: 6px; width: 25px; height: 25px; display: none;}
+
+/*.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;        // Make inputs at least the height of their button counterpart
+  .box-sizing(border-box); // Makes inputs behave like true block-level elements
+}*/
+
+/*overriding style*/
+
+/*.navbar-inverse {
+    border-color:none !important;
+    color:whitesmoke;
+    background-color: #147ba6 !important;
+}
+
+.navbar-brand {
+  float: left;
+  height: 60px !important;
+  padding: 10px 10px !important;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.navbar-fixed-top {
+  top: 0;
+  border-width: 0 0 0px !important;
+}
+
+
+.navbar-inverse .navbar-nav > li > a {
+  color: white !important;
+}
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color:   burlywood !important;
+  background-color: transparent;
+}
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+  color: black !important;
+  background-color: #080808;
+}
+.navbar-inverse .navbar-nav > .disabled > a,
+.navbar-inverse .navbar-nav > .disabled > a:hover,
+.navbar-inverse .navbar-nav > .disabled > a:focus {
+  color: red !important;
+  background-color: transparent;
+}
+/*.navbar-inverse .navbar-toggle {
+  border-color: #333;
+}
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  background-color: #333;
+}
+.navbar-inverse .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+  border-color: #101010;
+}
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color: white !important;  
+  background-color: #285977   !important;
+}
+*/
+
+
+/*override*/
+
+a.white {
+  color: white;
+}
+/*a.white:active, 
+a.white:hover {
+  color: white;
+}*/
+
+.bwdetected{
+    background-color :  #FFD700;    /*yellow*/
+    color: white;
+}
+.bwnotdetected{
+    background-color : white;
+    color: white;
+}
+.risklow{
+    background-color :  #5dade2 ;  /*blue*/
+    color : white;
+}
+
+.riskmedium{
+    background-color :   #009051 ;  /*green*/
+    color : white;
+}
+.riskhigh{
+    background-color :   #D11D00;   /*red*/
+    color : white;
+}
+.risknotavailable{
+    background-color :   white;
+    color : white;
+}
+.tradingplanblue{
+    background-color :   #5dade2;   /*blue*/
+    color : white;
+}
+.tradingplangreen{         
+    background-color :   #009051;    /*green*/
+    color : white;
+}
+.tradingplanyellow{
+    background-color :   #FFD700;   /*yellow*/
+    color : white;
+}
+.tradingplanred{
+    background-color :   #D11D00;   /*red*/
+    color : white;
+}
+.tradingplanwhite{
+    background-color :   white;   /*yellow*/
+    color : black;
+}
+
+.gslineup{
+    background-color :   #009051;   /*green*/
+    color : white;
+}
+.gslinedown{
+    background-color :   #D11D00;   /*red*/
+    color : white;
+}
+.gslineneutral{
+    background-color :   white;   /*white*/
+    color : black;
+}
+
+.trendcolorstrongup{
+    background-color :   #5dade2;   /*blue*/
+    color : white;
+}
+
+.trendcolorup{
+    background-color :   #009051;   /*green*/
+    color : white;
+}
+
+.trendcolorneutral{
+    background-color :   white;   /*white*/
+    color : black;
+}
+
+.trendcolordown{
+    background-color :    #FF7E79  ;   /*lightred*/
+    color : white;
+}
+.trendcolorstrongdown{
+    background-color :    #D11D00 ;   /*red*/
+    color : white;
+}
+
+.trendcolornone{
+    background-color :    white ;   /*white*/
+    color : white;
+}
+
+.lasttrendgreen{
+    background-color :   #009051;   /*green*/
+    color : white;
+}
+
+.lasttrendred{
+    background-color :    #D11D00 ;   /*red*/
+    color : white;
+}
+
+.normalrangebelow{
+    background-color :   #009051;   /*green*/
+    color : white;
+}
+
+.normalrangeabove{
+    background-color :    #D11D00 ;   /*red*/
+    color : white;
+}
+
+.normalrangenone{
+    background-color :    white ;   /*white*/
+    color : black;
+}
+
+.buylimitgreen{
+    background-color :    #009051 ;   /*green*/
+    color : white;
+}
+.buylimitwhite{
+    background-color :   white ;   /*white*/
+    color : black;
+}
+
+
+.closetoresistwhite{
+    background-color :   white ;   /*white*/
+    color : black;
+}
+.closetoresistblue{
+    background-color :   #5dade2 ;   /*white*/
+    color : white;
+}
+.closetoresistgreen{
+    background-color :   #009051 ;   /*white*/
+    color : white;
+}
+.closetosupportwhite{
+    background-color :   white ;   /*white*/
+    color : black;
+}
+.closetosupportred{
+    background-color :   #D11D00 ;   /*white*/
+    color : white;
+}
+
+/* Change the white to any color ;) */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+.login-panel-heading {
+    background-color:#147ba6;
+    border-top-left-radius:20px; 
+    border-top-right-radius:20px; 
+    -moz-border-radius-topleft:20px; 
+    -moz-border-radius-topright:20px; 
+    height:50px
+
+}
+

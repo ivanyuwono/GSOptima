@@ -1,0 +1,8 @@
+﻿@model GSOptima.Models.BootstrapModel
+
+@*Partial view ini adalah template untuk menampilkan suatu message dalam modal form. View ini akan ditampilkan menggunakan javascript function DisplayModal()*@
+@await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = Model.Header })
+<div class="modal-body">
+    @Model.Message
+  </div>
+@await Html.PartialAsync("_ModalFooter", new ModalFooter {OnlyCancelButton = true, CancelButtonText="OK" })

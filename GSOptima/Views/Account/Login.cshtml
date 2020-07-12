@@ -1,0 +1,108 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Log in to";
+    ViewData["ReturnUrl"] = "/StockChart/Index";
+}
+@{
+    Layout = "~/Views/Shared/_OpeningLayout.cshtml";
+}
+
+<div style="background-color:transparent" class="container">
+
+    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1 ">
+
+                <div style="width:100%;display: table; height:70vh; margin-top:30px;  background-color:transparent">
+                    @*<div style="width:100%;display: table; height:500px;  overflow: hidden;background-color:transparent">*@
+                    <div style="background-color:transparent;display: table-cell; vertical-align: middle;">
+
+
+                        <div class="panel" style="background-color:transparent">
+
+                            <div class="panel-heading login-panel-heading">
+                                <img style="display:block; height:40px;margin:auto; margin-top:-4px;" src="~/images/login.png" />
+                            </div>
+                            <div class="panel-body" style="background-color: #f7fafc">
+
+
+                                <div style="margin:0px 20px -25px 20px;">
+
+                                    <div style="margin-left:-40px;" asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                                    <div class="form-group">
+                                        <div>Email</div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user-o fa-fw"></i></span>
+                                            <input asp-for="Email" class="form-control" type="text" placeholder="Enter your email address">
+
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group" style="margin-top:-10px">
+                                        <div>Password</div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                            <input asp-for="Password" class="form-control input-md" type="password" placeholder="Password">
+                                        </div>
+
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                        <div class="row">
+                                            <div class="col-xs-6" style="padding-right:0px">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" asp-for="RememberMe">@Html.DisplayNameFor(m => m.RememberMe)
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-6" style="text-align:right; margin-top:9px; padding-left:0px">
+                                                <a asp-action="ForgotPassword">Forgot password</a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <hr style="margin-top:-10px" />
+
+                                    <div class="form-group" style="margin-top:-10px; margin-bottom:20px">
+                                        <div style="text-align:center">
+                                            <button style="width:45%" type="submit" class="btn btn-info">Log in</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="panel-footer" style="border-bottom-left-radius:20px; border-bottom-right-radius:20px">
+                                <div class="text-center">
+                                    @*<a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user</a>*@
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+</div>
+
+
+
+
+<br />
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

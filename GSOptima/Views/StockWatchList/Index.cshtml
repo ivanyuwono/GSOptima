@@ -1,0 +1,364 @@
+@model GSOptima.ViewModels.StockWatchListViewModel
+@using GSOptima.ViewModels
+@using GSOptima.Code
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+    @*<a asp-action="Create">Add</a>
+        <a asp-action="Create2" asp-controller="StockWatchList" data-target="modal-container" data-toggle="modal">Add Bro</a>*@
+<br/>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        @*<h4>Hi @Model.CurrentUser.Name , These are your Watch List</h4>*@
+        <h4>Stock Watchlist</h4>
+    </div>
+
+    <div class="panel-body">
+
+        @*<div class="input-group" style="max-width:250px">
+            <input type="text" id="txtStock" class="form-control" placeholder="Type Stock Code..">
+            <span class="input-group-btn">
+                <button id="btnFindStock" class="btn btn-default  ">
+                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
+                </button>
+                <button id="btnAddToStock" class="btn btn-success ">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+            </span>
+
+        </div>*@
+       
+        <div class="input-group">
+            <input type="text" id="txtStock" class="form-control" placeholder="Type Stock Code..">
+            <span class="input-group-btn">
+                @*<button id="btnFindStock" class="btn btn-default  ">
+                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
+                </button>*@
+
+
+                @*Disini ada 2 cara menampilkan modal dialog, dengan script jquery atau menggunakan data-toogle untuk hyperlink
+                Kita gunanakan yang hyperlink. Form modal bisa dalam bentuk partial view atau view component*@
+                
+                @*<a id="btnFindStock" class="btn btn-default">
+                    <i class="fa fa-search fa-lg fa-fw" aria-hidden="false"></i>
+                </a>*@
+
+                <a id="btnDisplayStockList" data-toggle="modal" asp-action="Create" data-target="#modal-container" class="btn btn-primary">
+                    <i class="fa fa-search fa-lg fa-fw"></i>
+                </a>
+
+                @*<button id="btnAddToWatch" class="btn btn-info ">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Add
+                </button>*@
+                <a id="btnAddToWatch" class="btn btn-info" >
+                    <i class="fa fa-plus fa-lg fa-fw" aria-hidden="false"></i>
+                    Add
+                </a>
+
+
+            </span>
+        </div><!-- /input-group -->
+
+
+    </div>
+
+    <div class="panel-body">
+
+    </div>
+
+    @*<div id="mask" class="mask">
+        <img src="~/images/ajax-loader.gif">
+        Processing
+    </div>*@
+   @await Html.PartialAsync("_Loading")
+    <div id="watchList">
+
+        @await Component.InvokeAsync("WatchList", new { currentUser = ViewData["CurrentUser"] })
+    </div>
+
+
+</div>
+
+@*untuk menampilkan message box*@
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">  
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+
+
+@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+   
+
+            function refreshStockWatchList() {
+
+                $.ajax({
+                    url: '/StockWatchList/Index/',
+                    //data: { filter: $('#filter').val(), page: '', sort:'', nowsort:''},
+                    //data: { stockId: Id },
+                    type: 'POST',
+                    //cache: false,
+                    success: function (result) {
+        
+                        //$('#List').unmask("waiting ...");
+                        //load returned data inside contentFrame DIV
+                        $('#txtStock').val('');
+
+                        $('#watchList').html(result);
+                        $('.table-footable').footable();
+                        //$('#mask').hide();
+                    },
+                    error: function (error) {
+                        alert('dari refresh watch ' + error);
+                        console.log(error);
+                    }
+                });
+
+            };
+
+            $('#txtStock').keypress(function (e) {
+                if (e.which == 13) {
+                    AddToWatch($('#txtStock').val());
+                }
+            });
+
+
+            //Fungsi ini untuk menampilkan modal dialog daftar stock. Tapi tidak dipakai lagi karena menggunakan hyperlink dan data modal
+            $('#btnFindStock').on('click', function () {
+
+                //$('#List').mask("waiting ...");
+                //$('#mask').show();
+
+                var Id = $('#txtStock').val();
+
+                $.ajax({
+                    url: '/StockWatchList/Create/',
+                    //data: JSON.stringify(Id),
+                    type: 'POST',
+                    //dataType: 'json',
+                    //contentType: 'application/json',
+                    //cache: false,
+                    success: function (result) {
+                     
+                        //$('#List').unmask("waiting ...");
+                        //load returned data inside contentFrame DIV
+                        $('#modal-content').html(result);
+                        $('#modal-container').modal('show');
+                    }
+                });
+            });
+
+
+            //Handler untuk tambah ke watchlist via pop up daftar stock
+            $('#modal-content').on('click', '#btnAddStock', function (v) {
+                
+                var Id = $(this).attr("value");
+                AddToWatch(Id);
+        
+            });
+
+            //Handler untuk toogle add/remove watchlist stock DARI LAYAR CHART (popup)
+            //$('#modal-content').on('click', '.btnAdd', function () {
+    
+
+            //    var action = "";
+            //    var value = $('#btnAddToStock, #btnAddToStockxs').attr("value");
+
+            //    if (value == "R")
+            //        action = "R"
+            //    else if (value == "A")
+            //        action = "A";
+            //    else
+            //        alert('invalid value in button');
+
+
+            //    var Id = $('#hiddenStockID').val();
+            //    if (Id == '')
+            //        return;
+
+            //    var obj = { "StockID": Id, "Action": action };
+
+
+            //    $.ajax({
+            //        url: '/StockWatchList/AddToStock/',
+            //        data: JSON.stringify(obj),
+            //        type: 'POST',
+            //        dataType: 'json',
+            //        contentType: 'application/json',
+            //        cache: false,
+            //        success: function (result) {
+
+            //            if (result) {
+            //                displayModal('Error', result, '/Common/ShowModal/');
+            //            }
+            //            else {
+            //                if (action == "A") {
+            //                    $('#btnAddToStock, #btnAddToStockxs').attr("value", "R");
+            //                    $('#divAddToStock, #divAddToStockxs').text("Remove");
+
+            //                }
+            //                else if (action == "R") {
+            //                    $('#btnAddToStock, #btnAddToStockxs').attr("value", "A");
+            //                    $('#divAddToStock, #divAddToStockxs').text("Add");
+
+            //                }
+            //                else
+            //                    alert("invalid value");
+
+            //                refreshStockWatchList();
+            //            }
+            //        },
+            //        error: function (error) {
+            //            DisplayError(error);
+            //            console.log(error);
+            //            //alert(error);
+
+            //        }
+            //    });
+
+            //});
+
+            //Ivan
+            //handler untuk toogle add remove watchlist pop up chart
+            $('#modal-container').on('click', '.btnAdd', function () {
+
+                AddRemoveWatchlist(refreshStockWatchList);
+
+            });
+            //$('#modal-container').on('click', '#btnAddToStock', function () {
+
+            //    AddRemoveWatchlist(refreshStockWatchList);
+
+            //});
+
+            function AddToWatch(stockId) {
+
+                //var Id = $('#txtStock').val();
+                if (stockId == '')
+                    return;
+                var obj = { "StockID": stockId, "Action": "A" };
+
+                $('#mask').show();
+                $.ajax({
+                    url: '/StockWatchList/AddToStock/',
+                    data: JSON.stringify(obj),
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    cache: false,
+                    success: function (result) {
+                        //$('#List').unmask("waiting ...");
+                        //load returned data inside contentFrame DIV
+         
+                        if (result) {
+                            displayModal('Error', result, '/Common/ShowModal/');
+                        }
+
+                        else {
+                            refreshStockWatchList();
+                            //$('.table-responsive').responsiveTable('update');
+                            //ga jadi lah
+                            //displayModal('Information', Id.toUpperCase() + ' has been added to your watchlist', '/Common/ShowModal/');
+                        }
+
+                        $('#txtStock').val('');
+
+                    },
+                    error: function (error) {
+                        alert(error);
+
+                    }
+                });
+                $('#mask').hide();
+
+            };
+            //Fungsi ini untuk memasukkan stock yang DIINPUT dari textbox ke dalam watchlist 
+            $('#btnAddToWatch').on('click', function () {
+
+                AddToWatch($('#txtStock').val());
+            });
+
+            //function handler untuk delete watchlist 
+            $('#watchList').on('click', '.btnDelete', function () {
+                //var Id = $(this).val();
+                var Id = $(this).attr('value');
+                $('#mask').show();
+                $.ajax({
+                    url: '/StockWatchList/Delete/',
+                    //data: { filter: $('#filter').val(), page: '', sort:'', nowsort:''},
+                    data: { stockId: Id },
+                    type: 'POST',
+                    //cache: false,
+                    success: function (result) {
+                        //$('#List').unmask("waiting ...");
+                        //load returned data inside contentFrame DIV
+                        $('#watchList').html(result);
+                        //$('.table-responsive').responsiveTable('update');
+                        //$('#mask').hide();
+                        $('.table').footable();
+                    }
+                 
+                });
+                $('#mask').hide();
+            });
+
+            //$(function () {
+            //    // when the modal is closed
+            //    $('#modal-container').on('hidden.bs.modal', function () {
+            //        // remove the bs.modal data attribute from it
+            //        $(this).removeData('bs.modal');
+            //        // and empty the modal-content element
+            //        $('#modal-container .modal-content').empty();
+            //        //refresh page index
+            //        $.ajax({
+            //            url: '/StockWatchList/Index/',
+            //            //data: { filter: $('#filter').val(), page: '', sort:'', nowsort:''},
+            //            //data: { stockId: Id },
+            //            type: 'POST',
+            //            //cache: false,
+            //            success: function (result) {
+            //                //$('#List').unmask("waiting ...");
+            //                //load returned data inside contentFrame DIV
+            //                $('#watchList').html(result);
+            //                $('.table').footable();
+            //                //$('.table-responsive').responsiveTable('update');
+            //                //$('#mask').hide();
+            //            }
+            //        });
+
+
+            //        //window.location.href = '/StockWatchList/Index';
+            //    });
+            //});
+
+            //$('#modal-container').on('show.bs.modal', function (event) {
+            //    var button = $(event.relatedTarget); // Button that triggered the modal
+            //    var url = button.attr("href");
+            //    var modal = $(this);
+            //    alert(url);
+            //    // note that this will replace the content of modal-content ever time the modal is opened
+            //    modal.find('.modal-content').load(url);
+            //});
+        });
+
+    </script>
+
+
+}

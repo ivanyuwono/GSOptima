@@ -1,0 +1,414 @@
+﻿@using GSOptima.ViewModels
+@using GSOptima.Code
+@model Paging<GSOptima.Models.AccountViewModels.RegisterViewModel>
+
+@{
+    ViewData["Title"] = "User List";
+}
+@*untuk menampilkan message box*@
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+
+<div  class="container body-content">
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <h2>User Management</h2>
+
+
+        </div>
+        <div class="panel-heading">
+            <a id="newUser" data-toggle="modal" asp-controller="Account" asp-action="CreateUser" data-target="#modal-container" class="btn btn-primary">
+                <i class="glyphicon glyphicon-plus-sign"></i>  New User
+            </a>
+
+        </div>
+        <div class="panel-body">
+
+
+            <div class="input-group">
+                <input type="text" id="txtSearch" class="form-control" value="@Model.attribute.filter" placeholder="Search by name or email">
+                <span class="input-group-btn">
+                    <a id="btnSearch" class="btn btn-info" style="width:110px">
+                        @*<i class="glyphicon glyphicon-stats"></i>*@
+                        <i class="fa fa-search fa-lg fa-fw" aria-hidden="false"></i>
+                        Search
+                    </a>
+
+                    @*<button id="btnSearch" class="btn btn-default  ">
+                        <i class="glyphicon glyphicon-search" aria-hidden="true">Search</i>
+                    </button>*@
+                    
+
+                </span>
+            </div><!-- /input-group -->
+
+        </div>
+        <div>
+            @*<div id="mask" class="mask">
+                <img src="~/images/ajax-loader.gif">
+                Processing
+            </div>*@
+
+            @await Html.PartialAsync("_Loading")
+            <!-- Table --> 
+            <div id="userList">
+
+                @await Component.InvokeAsync("UserList")
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+@*untuk menampilkan message box*@
+@*@Html.Partial("_MessageModalContainer")*@
+
+@Html.Partial("_Modal", new BootstrapModel {Size = ModalSize.Large })
+@*@await Component.InvokeAsync("BootstrapModal", new { m = new BootstrapModel { ID = "modal-action", AreaLabeledId = "modal-action-label", Size = ModalSize.Medium } })*@
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+
+    $(document).ready(function ()
+    {
+        
+
+        $('#modal-content1').on('click', '#btnSubmitCreate', function () {
+
+            alert('xx');
+
+            if (!$("#frmCreate").valid()) {
+
+                return false;
+            }
+            var model = {
+                Name: $('#Name').val(),
+                Email: $('#Email').val(),
+                Password: $('#Password').val(),
+                ConfirmPassword: $('#ConfirmPassword').val(),
+                StartDate: $('#StartDate').val(),
+                EndDate: $('#EndDate').val(),
+                BirthDate: $('#BirthDate').val(),
+                Address: $('#Address').val(),
+                MembershipType: $('#MembershipType').val(),
+                Roles : $('#Roles').val()
+            };
+
+     
+
+            //var model = 'IVAN';
+            $.ajax({
+                url: '/Account/CreateUser2/',
+                //data: JSON.stringify(model),
+                data:model,
+                type: 'POST',
+                //dataType: 'json',
+                //dataType: 'html',
+                //contentType: 'application/json',  //kalau ini diset maka harus pakai frombody di controller dan json.stringify
+                success: function (result) {
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+
+                    //alert(result);
+                    
+                    //displayModal('Information', result, '/StockWatchList/ShowModal/');
+                    $('#modal-content').html(result);
+                    $('#modal-container').modal('show');
+                    $.validator.unobtrusive.parse("form");
+                    //$('#stockScreening').html(result);
+                    //$('#mask').hide();
+                },
+                error: function (fail) {
+                    alert("Fail " + fail);
+                    console.log(fail);
+                }
+            });
+
+
+            });
+        //});
+
+        //$('#btnEmail').on('click',function () {
+        $('#userList').on('click', '#btnEmail', function () {
+            var idx = $(this).attr('value');
+            //alert('email ' + idx);
+
+            $.ajax({
+                url: '/Account/SendEmail/',
+                data: { id: idx },
+                type: 'POST',
+                success: function (result) {
+
+                    //alert(result);
+
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+                    //displayModal('Information', result, '/StockWatchList/ShowModal/');
+                    displayModal('Information', result, '/Common/ShowModal/');
+
+                    //$('#stockScreening').html(result);
+                    //$('#mask').hide();
+                },
+                error: function (fail) {
+
+                    alert('fail ' + fail);
+                }
+            });
+
+        });
+        $('#btnSearch').click(function () {
+            ///if ($('#txtSearch').val() != '')
+                paging('1', '', '', '', $('#txtSearch').val(), '', '/Account/Index', 'userList')
+
+        });
+        $('#btnEdit').click(function () {
+
+            var idx = $('#btnEdit').text();
+            //alert('edit');
+
+            $.ajax({
+                url: '/Account/EditUser/',
+                data: { id: idx },
+                type: 'GET',
+                success: function (result) {
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+                      //window.location.replace("/Account/EditUser/");
+                    //displayModal('Information', result, '/StockWatchList/ShowModal/');
+                    $('#modal-content').html(result);
+                    $('#modal-container').modal('show');
+                    $.validator.unobtrusive.parse("form");
+                    //$('#mask').hide();
+                },
+                error: function (fail) {
+                    alert('fail ' + fail);
+                }
+            });
+
+        });
+
+        $('#btnRegister').click(function () {
+
+           
+            $.ajax({
+                url: '/Account/CreateUser/',
+                //data: { mode: 'admin' },
+                type: 'GET',
+                success: function (result) {
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+                    //window.location.replace("/Account/EditUser/");
+                    //displayModal('Information', result, '/StockWatchList/ShowModal/');
+                    if (partialResult != "") {
+                        $('.modal-content').html(result);
+                        //$('#modal-action-customer').modal('show');
+                        $('#modal-container').modal('show');
+                        $.validator.unobtrusive.parse("form");
+                    }
+                    else
+                    {
+                        //$('#modal-action-customer').modal('hide');
+                        $('#modal-container').modal('hide');
+                        //refresh
+                        paging('1', '', '', '', '', '', '/Account/Index', 'userList');
+                    }
+                    //$('#mask').hide();
+                },
+                error: function (fail) {
+                    alert(fail);
+                }
+            });
+
+        });
+
+        $('#modal-container').on('submit', '#frmCreate', function (e) {
+            //$('#modal-action-customer').on('submit', '#frmCreate', function (e) {
+
+            //alert ("create");
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                //url: form.attr("action"),
+                url: '/Account/CreateUser2/',
+                method:'POST',
+                //method: form.attr("method"),
+                data:form.serialize(),
+                success:function(partialResult) {
+  
+                    if (partialResult != "") {
+
+                        $('.modal-content').html(partialResult);
+                        //$('#modal-action-customer').modal('show');
+                        $('#modal-container').modal('show');
+                        $.validator.unobtrusive.parse("form");
+                    }
+                    else
+                    {
+                        //$('#modal-action-customer').modal('hide');
+                        $('#modal-container').modal('hide');
+                        //refresh
+                        paging('1', '', '', '', '', '', '/Account/Index', 'userList');
+                    }
+                   
+                },
+                error: function (fail) {
+                    alert('fail ' + fail);
+                }
+            })
+        });
+
+        //$('#modal-action-customer').on('submit', '#frmEdit', function (e) {
+            $('#modal-container').on('submit', '#frmEdit', function (e) {
+
+            //alert('edit');
+            e.preventDefault();
+            var form = $(this);
+
+            $.ajax({
+                url: '/Account/EditUser/',
+                data: form.serialize(),
+                type: 'POST',
+                success: function (partialResult) {
+                    if (partialResult != "") {
+                        //$('#List').unmask("waiting ...");
+                        //load returned data inside contentFrame DIV
+                        //window.location.replace("/Account/EditUser/");
+                        //displayModal('Information', result, '/StockWatchList/ShowModal/');
+                        $('.modal-content').html(partialResult);
+                        //$('#modal-action-customer').modal('show');
+                        $('#modal-container').modal('show');
+                        $.validator.unobtrusive.parse("form");
+                    }
+                    else
+                    {
+                        //$('#modal-action-customer').modal('hide');
+                        $('#modal-container').modal('hide');
+                        //refresh
+                        paging('1', '', '', '', '', '', '/Account/Index', 'userList');
+
+                    }
+                    //$('#mask').hide();
+                },
+                error: function (fail) {
+                    alert('FX ' + fail);
+                }
+            });
+
+        });
+
+        //$('#modal-action-customer').on('submit', '#frmDelete', function (e) {
+            $('#modal-container').on('submit', '#frmDelete', function (e) {
+
+            //alert('delete');
+            e.preventDefault();
+            var form = $(this);
+
+            $.ajax({
+                url: '/Account/Delete/',
+                data: form.serialize(),
+                type: 'POST',
+                success: function (partialResult) {
+                    if (partialResult == "logoff")
+                    {
+                        //$('#modal-action-customer').modal('hide');
+                        $('#modal-container').modal('hide');
+                        window.location.replace("/Home/Index/");
+                    }
+                    else if (partialResult != "") {
+                        //$('#List').unmask("waiting ...");
+                        //load returned data inside contentFrame DIV
+                        //window.location.replace("/Account/EditUser/");
+                        //displayModal('Information', result, '/StockWatchList/ShowModal/');
+                        $('.modal-content').html(partialResult);
+                        //$('#modal-action-customer').modal('show');
+                        $('#modal-container').modal('show');
+                        $.validator.unobtrusive.parse("form");
+                    }
+                    else {
+                        //$('#modal-action-customer').modal('hide');
+                        $('#modal-container').modal('hide');
+                        //refresh
+                        paging('1', '', '', '', '', '', '/Account/Index', 'userList');
+
+                    }
+                    //$('#mask').hide();
+                },
+                error: function (fail) {
+                    alert('Form Delete ' + fail);
+                }
+            });
+
+        });
+
+        $('.table-footable').footable().bind({
+            'collapse.ft.row': function (e, row) {
+                //Your code when a row is collapsed
+                //alert('col');
+                //$('.dodol').show();
+                //$('.xxx').show  ();
+                //$("table.footable-details tbody tr th > i.fa").addClass("fa fa-sort fa-lg pull-right");
+            },
+
+            'expand.ft.row': function (e, row) {
+                //alert(row);
+                //$("table.footable-details tr th >  i.fa").removeClass();
+                //$('.xxx').hide();
+                //$('.dodol').hide();
+                //Your code when a row is expanded                  
+            },
+            //'expanded.ft.row': function (e, row) {
+            //    alert('expamnsws');
+
+            //    //$("table.footable-details tr th >  i.fa").removeClass();
+            //    $('.xxx').hide();
+            //    $('.dodol').hide();
+            //    //Your code when a row is expanded                  
+            //},
+            //'collapsed.ft.row': function (e, row) {
+            //    //Your code when a row is collapsed
+            //    alert('colaa');
+            //    $('.xxx').show();
+            //    $('.dodol').show();
+            //    //$("table.footable-details tbody tr th > i.fa").addClass("fa fa-sort fa-lg pull-right");
+            //}   
+
+            'before.ft.breakpoints': function (e, ft, current, next) {
+                //Your code when a row is collapsed
+                //alert('XXXX');
+                //paging('1', '', '', '', '', '', '/Account/Index', 'userList');
+                //alert(current);
+                //$('.xxx').hide();
+                //$('.dodol').hide();
+                //$("table.footable-details tbody tr th i.fa").hide();
+            }
+
+        });
+    });
+
+    </script>
+
+
+}

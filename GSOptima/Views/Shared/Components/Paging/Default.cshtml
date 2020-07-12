@@ -1,0 +1,131 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using GSOptima.ViewModels;
+@model PagingAttribute
+
+
+
+
+@*<form asp-action="Index" asp-controller="Currencies" id="paging" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#List"  data-ajax-loading="#mask">*@
+
+
+    @*<input id="filter" type="hidden" name="filter" />
+        <input id="page" type="hidden" name="page" />
+        <input id="sort" type="hidden" name="sort" />
+        <input id="nowsort" type="hidden" name="nowsort" />*@
+
+
+    @{
+        var x = 0;
+        var y = 0;
+        var notif = "";
+        if (Model.recordsTotal > 0)
+        {
+            x = ((Model.currentPage - 1) * Model.recordPerPage) + 1;
+            y = x + Model.filteredRecord - 1;
+            notif = "Showing " + x + " to " + y + " of " + Model.recordsTotal + " record(s)";
+        }
+        //else
+        //{
+        //    notif = "No Data";
+
+        //}
+    }
+
+<div class="container-fluid">
+    
+    <div class="row">
+
+
+        <div class="col-md-12 text-center">
+            @if (Model.recordsTotal > 0)
+            {
+                <div>
+                    <ul class="pagination">
+
+                        @{
+                            var classFirst = "";
+                            if (@Model.currentPage == 1)
+                            {
+                                classFirst = "disabled";
+                            }
+                            var classLast = "";
+                            if (@Model.currentPage == Model.totalPage)
+                            {
+                                classLast = "disabled";
+                            }
+
+                            var classPrev = "";
+                            if (@Model.currentPage == 1)
+                            {
+                                classPrev = "disabled";
+                            }
+
+                            var classNext = "";
+                            if (Model.currentPage == Model.totalPage)
+                            {
+                                classNext = "disabled";
+                            }
+                            if (Model.recordsTotal == 0)
+                            {
+                                classPrev = "disabled";
+                                classNext = "disabled";
+                            }
+                        }
+                        @*<li id="Prev" name="Prev" class="@classPrev"><a href="#" onclick="paging('P','')">Prev</a></li>*@
+
+                        <li id="First" name="First" class="@classFirst">
+                            <a href="#" class="btn btn-default @classFirst" onclick="paging(@Model.currentPage, 'F', @Model.totalPage,'@Model.sorting', '@Model.filter', '', '@Model.url', '@Model.divName')">
+                                <i class="fa fa-angle-double-left  fa-lg fa-fw" aria-hidden="false"></i>
+                            </a>
+                        </li>
+                        <li id="Prev" name="Prev" class="@classPrev">
+                            <a href="#" class="btn btn-default @classPrev" onclick="paging(@Model.currentPage, 'P', @Model.totalPage,'@Model.sorting', '@Model.filter', '', '@Model.url', '@Model.divName')">
+                                <i class="fa fa-angle-left  fa-lg fa-fw" aria-hidden="false"></i>
+                            </a>
+                        </li>
+
+                        @*Sementara list nomor halaman ditutup dulu*@
+                        @*@for (int i = 1; i <= Model.totalPage; i++)
+            {
+
+                var class_li = "";
+                if (Model.currentPage == i)
+                {
+                    class_li = "active";
+                }
+                else
+                {
+                    class_li = "";
+                }
+
+                <li id='@Html.Raw(i)' class="@class_li" name=@Html.Raw(i)><a href="#" onclick="paging(@Model.currentPage, '@i', @Model.totalPage,'@Model.sorting', '@Model.filter', '', '@Model.url', '@Model.divName')">@i</a></li>
+            }*@
+
+                        <li id="Next" name="Next" class="@classNext">
+                            <a href="#" class="btn btn-default @classNext" onclick="paging(@Model.currentPage, 'N', @Model.totalPage,'@Model.sorting', '@Model.filter', '', '@Model.url', '@Model.divName')">
+                                <i class="fa fa-angle-right  fa-lg fa-fw" aria-hidden="false"></i>
+                            </a>
+                        </li>
+                        <li id="Last" name="Last" class="@classLast">
+                            <a href="#" class="btn btn-default @classLast" onclick="paging(@Model.currentPage, 'L', @Model.totalPage,'@Model.sorting', '@Model.filter', '', '@Model.url', '@Model.divName')">
+                                <i class="fa fa-angle-double-right  fa-lg fa-fw" aria-hidden="false"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                @*<input type="text" id="page" class="input-sm pull-right" style="width:40px" />
+                    <button onclick="paging($('#page').val(),'')" class="btn btn-default pull-right">Go To</button>*@
+
+            }
+        </div>
+        <div class="text-center"  style="margin-top:0px">@notif</div>
+    </div>
+    
+    <div class="text-center">
+        
+    </div>
+
+</div>

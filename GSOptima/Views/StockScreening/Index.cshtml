@@ -1,0 +1,318 @@
+﻿ @*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*<h2>Stock Screening</h2>
+<br />*@
+
+@using GSOptima.ViewModels
+@using GSOptima.Code
+
+<br/>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <h4>Stock Screening</h4>
+    </div>
+
+    <div class="panel-body">
+        @*<div class="row">
+            <div class="col-md-12  col-xs-12">
+            </div>*@
+        <form class="form-inline">
+            <div class="form-group">
+                <label class="sr-only">Trading Plan</label>
+                <div>
+                    <select id="optPlan" class="form-control" title="Trading Plan" data-toggle="tooltip" data-placement="bottom">
+                        <option value="" selected disabled>Select Plan</option>
+                        <option value="abnormal">Abnormal Movement</option>
+                        <option value="bigwave">Bigwave</option>
+                        <option value="buy">Buy</option>
+                        <option value="watch">Watch</option>
+                        <option value="sell">Sell</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" >Min Price</label>
+                <div>
+                    <input id="minPrice" type="number" class="form-control" placeholder="Min Price = 51" title="Minimum Price" data-toggle="tooltip" data-placement="bottom"/>
+                    @*<span asp-validation-for="Email" class="text-danger"></span>*@
+                </div>
+            </div>
+
+                <div class="form-group">
+                    <label class="sr-only">Max Price</label>
+                    <div>
+                        <input id="maxPrice" type="number" class="form-control" placeholder="Max Price = 100K" title="Maximum Price" data-toggle="tooltip" data-placement="bottom"/>
+                        @*<span asp-validation-for="Email" class="text-danger"></span>*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only">Avg Volume &ge;</label>
+                    <div>
+                        <input id="avgVolume" type="number" class="form-control"  placeholder="Avg Vol >= 500K" title="Average Volume" data-toggle="tooltip" data-placement="bottom"/>
+                        @*<span asp-validation-for="Email" class="text-danger"></span>*@
+                    </div>
+               </div>
+            <div class="form-group">
+                <label class="sr-only">1Day</label>
+
+                <div class="btn-group" role="group" aria-label="...">
+                    <a id="link1day" class="btn btn-success" style="width:110px">
+                        @*<i class="glyphicon glyphicon-stats"></i>*@
+                        <i class="fa fa-search fa-lg fa-fw" aria-hidden="false"></i>
+                        Last Day
+                    </a>
+                    <a id="link5days" class="btn btn-info" style="width:110px">
+                        @*<i class="glyphicon glyphicon-stats"></i>*@
+                        <i class="fa fa-search fa-lg fa-fw" aria-hidden="false"></i>
+                        5 Days
+                    </a>
+                </div>
+
+                    
+            </div>
+ 
+</form>
+        <hr />
+
+
+
+    </div>
+
+
+    @await Html.PartialAsync("_Loading")
+    @*Untuk menampilkan modal form, bukan modal message ya*@
+    @Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })
+        
+        <div id="stockScreening">
+            @await Component.InvokeAsync("StockScreening", new { filter = ";;;;" })  
+        </div>
+    </div>
+@*@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })*@
+                @*<div class="input-group">
+
+                <select id="optPlan" class="form-control">
+                    <option value="" selected disabled>Select Trading Plan</option>
+                    <option value="abnormal">Abnormal Movement</option>
+                    <option value="bigwave">Bigwave - Above 3 Months Average</option>
+                    <option value="buy">Buy</option>
+                    <option value="watch">Watch</option>
+                    <option value="sell">Sell</option>
+                    <option value="hold">Hold</option>
+                </select>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="glyphicon glyphicon-search" aria-hidden="true"></i> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a id="link1day" href="#">Last Trading Day</a></li>
+                        <li><a id="link5days" href="#">5 Days</a></li>
+
+                    </ul>
+                </div><!-- /btn-group -->
+            </div><!-- /input-group -->*@
+
+        
+
+        
+
+        @*<div class="col-md-6 col-xs-6">
+                <div class="input-group" >
+                    <span class="input-group-btn">
+                        <select id="optTime" class="form-control">
+                            <option value="1">Last Trading Day</option>
+                            <option value="5">5 Days</option>
+                        </select>
+                    </span>
+
+                    <select id="optPlan" class="form-control" >
+                        <option selected disabled>Select Trading Plan</option>
+                        <option value="buy">Buy</option>
+                        <option value="watch">Watch</option>
+                        <option value="sell">Sell</option>
+                        <option value="hold">Hold</option>
+                        <option value="abnormal">Abnormal Movement</option>
+                        <option value="bigwave">Bigwave</option>
+                    </select>
+
+                    <span class="input-group-btn">
+                        <button id="btnScreening" class="btn btn-default  ">
+                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i>
+                        </button>
+
+                    </span>
+                </div>
+            </div>*@
+        @*</div>*@
+
+  
+
+        @*<div id="mask" class="mask panel panel-default">
+                <img src="~/images/ajax-loader.gif">
+                Processing
+            </div>*@
+
+  
+
+    @*untuk menampilkan message box*@
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function ()
+        {
+            $('#link1day').click(function () {
+
+                var plan = $('#optPlan').val();
+                var min = $('#minPrice').val();
+                var max = $('#maxPrice').val();
+                var volume = $('#avgVolume').val();
+
+                if (plan != "")
+                    Scan(plan, 1, min, max, volume);
+            });
+
+            $('#link5days').click(function () {
+
+                var plan = $('#optPlan').val();
+                var min = $('#minPrice').val();
+                var max = $('#maxPrice').val();
+                var volume = $('#avgVolume').val();
+
+                if (plan != "")
+                    Scan(plan, 5, min, max, volume);
+            });
+
+            function Scan(plan, periode, min, max, volume) {
+
+                if (plan == "" || !plan)
+                {
+                    displayModal('Error', "No selected plan", '/Common/ShowModal/');
+                    return;
+                }
+                
+
+            var condition = plan + ';' + periode + ';' + min + ';' + max + ';' + volume;
+            //alert(condition);
+
+            $('#mask').show();
+            $.ajax({
+                url: '/StockScreening/Index/',
+                //data: { filter: $('#filter').val(), page: '', sort:'', nowsort:''},
+                data: { filter: condition },
+                type: 'POST',
+                //cache: false,
+                success: function (result) {
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+    
+                    $('#stockScreening').html(result);
+                    $('.table').footable();
+                    $('#mask').hide();
+                    //$('#mask').hide();
+                }
+            });
+        
+        };
+        $('#btnScreening').click(function () {
+
+            var plan = $('#optPlan').val();
+            var time = $('#optTime').val();
+            Scan(plan, time);
+
+        });
+
+        //$('#btnAddToStock').on('click', function () {
+        $('#stockScreening').on('click', '#btnAddToStock', function () {
+            //$('#List').mask("waiting ...");
+            //$('#mask').show();
+
+            var Id = $(this).attr('value');
+            if (Id == '')
+                return;
+
+            var obj = { "StockID": Id, "Action": 'A' };
+
+
+            $('#mask').show();
+            $.ajax({
+                url: '/StockWatchList/AddToStock/',
+                data: JSON.stringify(obj),
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                cache: false,
+                success: function (result) {
+                    //$('#List').unmask("waiting ...");
+                    //load returned data inside contentFrame DIV
+
+                    if (result) {
+                        displayModal('Error', result, '/Common/ShowModal/');
+                    }
+
+                    else {
+                        //refreshStockWatchList();
+                        //$('.table-responsive').responsiveTable('update');
+                        //ga jadi lah
+                        displayModal('Information', Id.toUpperCase() + ' has been added to your watchlist', '/Common/ShowModal/');
+                    }
+                    //$('#spanValidation').text(result);
+                    $('#txtStock').val('');
+
+                },
+                error: function (error) {
+                    alert(error);
+
+                }
+            });
+            $('#mask').hide();
+        });
+
+        //handler untuk toogle add remove watchlist pop up chart
+        //$('#stockScreening').on('click', '.btnAdd', function () {
+        //    AddRemoveWatchlist();
+            //});
+
+         //handler untuk toogle add remove watchlist pop up chart
+        $('#modal-container').on('click', '.btnAdd', function () {
+
+            AddRemoveWatchlist();
+
+        });
+        //$('#modal-container').on('click', '#btnAddToStockxs', function () {
+        //    //alert('add from pop xs');
+        //    AddRemoveWatchlist();
+
+        //});
+        //$('#modal-container').on('click', '#btnAddToStock', function () {
+        //    //alert('add from pop xs');
+        //    AddRemoveWatchlist();
+
+        //});
+
+    });
+
+    </script>
+
+
+}

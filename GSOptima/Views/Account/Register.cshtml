@@ -1,0 +1,117 @@
+﻿@model GSOptima.Models.AccountViewModels.RegisterViewModel
+
+<br />
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <h4 class="modal-title">Register User</h4>
+    </div>
+    <div class="panel-body">
+        <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Password" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="MembershipType" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="MembershipType" class="form-control">
+                        <option value="GSOPTIMA">GS Optima</option>
+                        <option value="GSPREMIER">GS Premier</option>
+                    </select>
+                    <span asp-validation-for="MembershipType" class="text-danger"></span>
+                </div>
+            </div>
+            <input type="hidden" asp-for="StartDate" />
+            <input type="hidden" asp-for="EndDate" />
+            <input type="hidden" asp-for="Roles" />
+
+            @*<div class="form-group">
+                    <label asp-for="BirthDate" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="BirthDate" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Address" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartDate" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndDate" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Roles" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="Roles" asp-items="@Model.RoleList" class="form-control"></select>
+                        <span asp-validation-for="Roles" class="text-danger"></span>
+                    </div>
+                </div>*@
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-default">Register</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

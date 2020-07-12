@@ -1,0 +1,28 @@
+﻿@model GSOptima.ViewModels.ChartViewModel
+@using GSOptima.ViewModels
+
+
+    @*@await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "Chart" })*@
+
+@*Untuk chart yang dipanggil menjadi modal form*@
+
+    <div class="modal-body">
+
+        <div id="placeholder">
+
+            @await Component.InvokeAsync("StockChart", new { parameter = new ChartViewModel() { StockName = "XXXX", StockID = Model.StockID, NumberOfDays = Model.NumberOfDays, IsTextBoxVisible=false, IsModalDialog=Model.IsModalDialog } })
+            @*@await Component.InvokeAsync("StockChart")*@
+        </div>
+
+    </div>
+
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { OnlyCancelButton = true, CancelButtonText="OK" })
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+}
+@*<script src="~/js/d3.js"></script>*@
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="~/js/chart.js"></script>

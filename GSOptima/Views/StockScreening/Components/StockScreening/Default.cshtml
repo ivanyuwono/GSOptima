@@ -1,0 +1,204 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using GSOptima.ViewModels
+@using GSOptima.Services
+@using GSOptima.Code
+@model Paging<GSOptima.ViewModels.StockScreeningViewModel>
+
+@inject ScreeningUIService svc
+
+
+@{
+    System.Globalization.NumberFormatInfo nfi = new System.Globalization.CultureInfo("id-ID").NumberFormat;
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyGroupSeparator = ".";
+    nfi.CurrencyDecimalSeparator = ",";
+}
+
+@*@*Untuk menampilkan modal form, bukan modal message ya
+@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })*@
+
+<table class="table table-footable table-condensed">
+    <thead>
+        <tr>
+            
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "BigWave", columnText = "Big Wave", dataBreakpoint = "xs sm" })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "RiskProfile", columnText = "Risk Level", dataBreakpoint = "xs" })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "StockID", columnText = "Stock" })
+
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "TradingPlan", columnText = "Trading Plan", dataBreakpoint = "" }) 
+
+       
+            
+            @*<th style="cursor: pointer;" onclick="paging(@Model.attribute.currentPage, '1', @Model.attribute.totalPage,'@Model.attribute.sorting', '@Model.attribute.filter', 'StockID', '@Model.attribute.url', '@Model.attribute.divName')">
+                Stock
+                <span style="opacity:0.5" class="pull-left glyphicon @OrderingClassName("StockID", Model.attribute.sorting)"></span>
+            </th>*@
+            @*@await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Date", columnText = "Date" })*@
+
+            @*@await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Open", columnText = "Open" })*@
+
+
+            @*<th style="cursor: pointer;" onclick="paging(@Model.attribute.currentPage, '1', @Model.attribute.totalPage,'@Model.attribute.sorting', '@Model.attribute.filter', 'Open', '@Model.attribute.url', '@Model.attribute.divName')">
+                Open
+                <span style="opacity:0.5" class="pull-left glyphicon @OrderingClassName("Open", Model.attribute.sorting)"></span>
+            </th>*@
+
+            @*@await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "High", columnText = "High", dataBreakpoint = "xs sm" })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Low", columnText = "Low", dataBreakpoint = "xs sm" })*@
+
+
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Close", columnText = "Close", dataBreakpoint = "xs sm" })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Resistance", columnText = "Resist", dataBreakpoint = "xs sm " })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Support", columnText = "Support", dataBreakpoint = "xs sm " })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "BuyLimit", columnText = "Buy Limit", dataBreakpoint = "xs sm " })
+
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "CloseToResistance", columnText = "% To Resist", dataBreakpoint = "xs sm " })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "CloseToSupport", columnText = "% To Support", dataBreakpoint = "xs sm " })
+
+   
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "GSLine", columnText = "GS Line", dataBreakpoint = "xs" })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Trend", columnText = "Trend Color", dataBreakpoint = "" })
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "LastTrendbar", columnText = "Trend Bar", dataBreakpoint = "" })
+
+
+            @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "NormalRange", columnText = "Normal Range", dataBreakpoint = "xs sm" })
+           
+
+            @*<th data-breakpoints="xs sm">Action</th>*@
+            <th data-breakpoints=""><b>Chart</b></th>
+        </tr>
+    </thead>
+    <tbody style="color:black">
+        
+        @foreach (var item in Model.data)
+        {
+            <tr>
+                
+
+                <td class="@svc.DisplayBigWaveColor(item.BigWave)">
+                    @svc.DisplayBigWave(item.BigWave)
+                </td>
+                <td class="@svc.DisplayRiskColor(item.RiskProfile)">
+                    @*@Html.DisplayFor(modelitem => item.RiskProfile)*@
+                    @svc.DisplayRiskLevel(item.RiskProfile)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.StockID)
+                </td>
+
+                <td class="@svc.DisplayTradingPlanColor(item.TradingPlan)">
+                    @Html.DisplayFor(modelitem => item.TradingPlan)
+                </td>
+                
+                @*<td>
+                    @Html.DisplayFor(modelitem => item.Date)
+                </td>*@
+
+                <td >
+                    @*@Html.DisplayFor(modelitem => ((decimal)item.Close).ToString("0,##"))*@
+
+                    @if (item.Close.HasValue)
+                    {
+                        @item.Close.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+                </td>
+
+                @*<td>
+                    @Html.DisplayFor(modelitem => item.Open)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.High)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.Low)
+                </td>*@
+                <td>
+                    @*@Html.DisplayFor(modelitem => item.Resistance)*@
+                    @*@item.Resistance.Value.ToString("C", nfi)*@
+                    @if (item.Resistance.HasValue)
+                    {
+                        @item.Resistance.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelitem => item.Support)*@
+     
+                    @if (item.Support.HasValue)
+                    {
+                        @item.Support.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+
+                </td>
+                <td class="@svc.DisplayBuyLimitColor(item.TradingPlan)">
+                    @*@Html.DisplayFor(modelitem => item.BuyLimit)*@
+                    @if (item.BuyLimit.HasValue)
+                    {
+                        @item.BuyLimit.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+
+                </td>
+                <td class="@svc.DisplayCloseToResistColor(item.CloseToResistance)">
+                    @*@Html.DisplayFor(modelitem => item.CloseToResistance)%*@
+                    @if (item.CloseToResistance.HasValue)
+                    {
+                        @(item.CloseToResistance.Value.ToString("##0.##", nfi))
+                        @Html.Raw("%")
+
+                    }
+
+                </td>
+                <td class="@svc.DisplayCloseToSupportColor(item.CloseToSupport)">
+                    @*@Html.DisplayFor(modelitem => item.CloseToSupport)%*@
+                    @if (item.CloseToSupport.HasValue)
+                    {
+                        @(item.CloseToSupport.Value.ToString("##0.##", nfi))
+                        @Html.Raw("%")
+
+                    }
+
+                </td>
+                <td class="@svc.DisplayGSLineDirectionColor(item.GSLineDirection)">
+                    @svc.DisplayGSLineDirection(item.GSLineDirection)
+                </td>
+            
+                <td class="@svc.DisplayTrendColor(item.Trend)">
+                    @svc.DisplayTrend(item.Trend)
+                </td>
+                <td class="@svc.DisplayLastTrendBarColor(item.LastTrendBar)">
+                    @svc.DisplayLastTrendBar(item.LastTrendBar)
+                </td>
+
+                <td class="@svc.DisplayNormalRangeColor(item.NormalRange)">
+                    @svc.DisplayNormalRange(item.NormalRange)
+                </td>
+    
+                @*<td>
+                   
+                    <a id="btnAddToStock" class="btn btn-info btnAdd btn-sm" value="@item.StockID">
+                        <i class="fa fa-eye  fa-lg fa-fw" aria-hidden="false"></i>
+                        Watch
+                    </a>
+                </td>*@
+                <td>
+                    <a data-toggle="modal" asp-controller="StockChart" asp-action="DisplayChart" asp-route-stockID="@item.StockID" asp-route-numberOfDays="180" asp-route-isModalDialog="true" data-target="#modal-container" class="btn btn-primary">
+                        @*<i class="glyphicon glyphicon-stats"></i>*@
+                        <i class="fa fa-line-chart fa-lg fa-fw" aria-hidden="false"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+
+            <td colspan="15">
+                @await Component.InvokeAsync("Paging", new { pagingAttribute = Model.attribute })
+            </td>
+        </tr>
+    </tfoot>
+</table>

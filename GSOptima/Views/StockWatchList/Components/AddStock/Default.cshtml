@@ -1,0 +1,17 @@
+﻿@model GSOptima.ViewModels.StockWatchListViewModel
+
+<form asp-controller="StockWatchList" asp-action="Index" method="post">
+    <div class="form-group">
+
+        <div class="row">
+            <label class="col-md-2 control-label">Stock Code : </label>
+            <div class="col-md-10">
+                <input type="hidden" asp-for="CurrentUser.Id" />
+                <input  />
+                <span class="text-danger" />
+                <input type="submit" value="Add" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+</form>

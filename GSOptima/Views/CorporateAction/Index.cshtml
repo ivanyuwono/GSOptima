@@ -1,0 +1,248 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using GSOptima.Code
+@*untuk menampilkan message box*@
+@*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>*@
+@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })
+
+@*<div id="mask" class="mask">
+    <img src="~/images/ajax-loader.gif">
+    Processing
+</div>*@
+
+@await Html.PartialAsync("_Loading")
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <h2>Corporate Action - Stock Prices Adjusment</h2>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-8">
+                <section>
+                    <form method="post" id="frm" enctype="multipart/form-data" class="form-horizontal">
+
+                        
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Action Type</label>
+
+                            <div class="col-md-10">
+                                <select id="optAction" class="form-control">
+                                    <option value="S">Stock Split/Reverse Stock</option>
+                                    <option value="R">Right Issue/Bonus Issue</option>
+                                    <option value="U">Update Indicator</option>
+                                    <option value="A">Update Indicator All</option>
+                                    <option value="D">Delete Data</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="divStockID">
+                            <label class="col-md-2 control-label">Stock</label>
+                            <div class="col-md-10">
+                                <input type="text" id="txtStockID" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="divStartDate">
+                            <label class="col-md-2 control-label">Start Date</label>
+                            <div class="col-md-10">
+                                <input type="date" id="txtStartDate" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="divEndDate">
+                            <label class="col-md-2 control-label">End Date</label>
+                            <div class="col-md-10">
+                                <input type="date" id="txtEndDate" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="divOldRatio">
+                            <label class="col-md-2 control-label">Old Ratio</label>
+                            <div class="col-md-10">
+                                <input type="text" id="txtOldRatio" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="divNewRatio">
+                            <label class="col-md-2 control-label">New Ratio</label>
+                            <div class="col-md-10">
+                                <input type="text" id="txtNewRatio" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group" id="divNewPrice">
+                            <label class="col-md-2 control-label">New Price</label>
+                            <div class="col-md-10">
+                                <input type="text" id="txtNewPrice" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="button" id="btnSubmit" value="Process" class="btn btn-primary">Process</button>
+                                @*<button type="button" id="btnsubmit" value="Upload" class="btn btn-primary">
+                                        Upload
+                                        <img src="~/images/ajax-loader1.gif" class="spinner" />
+                                    </button>*@
+                            </div>
+                        </div>
+
+                    </form>
+                </section>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+            $(document).ready(function () {
+                //$("#frm").on("submit", function (event) {
+
+                $("optAction").val('S');
+                $("#divStockID").show();
+                $("#divStartDate").show();
+                $("#divEndDate").show();
+                $("#divOldRatio").show();
+                $("#divNewRatio").show();
+                $("#divNewPrice").hide();
+                //    var $this = $(this);
+                //    var frmValues = $this.serialize();
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+
+                var yyyy = today.getFullYear();
+                if (dd < 10) { dd = '0' + dd }
+                if (mm < 10) { mm = '0' + mm }
+                //today = dd + '/' + mm + '/' + yyyy;
+                today = yyyy + '-' + mm + '-' + dd;
+                $('#txtEndDate').attr('value', today);
+                $('#txtStartDate').attr('value', '2010-01-01');
+
+
+             
+
+
+                function CheckActionType()
+                {
+                    var val = this.value;
+            
+                    if (val == 'S') {
+                        $("#divStockID").show();
+                        $("#divStartDate").show();
+                        $("#divEndDate").show();
+                        $("#divOldRatio").show();
+                        $("#divNewRatio").show();
+                        $("#divNewPrice").hide();
+                    }
+                    else if (val == 'R') {
+                        $("#divStockID").show();
+                        $("#divStartDate").show();
+                        $("#divEndDate").show();
+                        $("#divOldRatio").show();
+                        $("#divNewRatio").show();
+                        $("#divNewPrice").show();
+                    }
+
+                    else if (val == 'U') {
+                        $("#divStockID").show();
+                        $("#divStartDate").hide();
+                        $("#divEndDate").hide();
+                        $("#divOldRatio").hide();
+                        $("#divNewRatio").hide();
+                        $("#divNewPrice").hide();
+                    }
+                    else if (val == 'A') {
+                        $("#divStockID").hide();
+                        $("#divStartDate").hide();
+                        $("#divEndDate").hide();
+                        $("#divOldRatio").hide();
+                        $("#divNewRatio").hide();
+                        $("#divNewPrice").hide();
+                    }
+                    else if (val == 'D') {
+                        $("#divStockID").hide();
+                        $("#divStartDate").show();
+                        $("#divEndDate").hide();
+                        $("#divOldRatio").hide();
+                        $("#divNewRatio").hide();
+                        $("#divNewPrice").hide();
+                    }
+
+                }
+
+                $("#optAction").change(CheckActionType);
+
+
+                $('#btnSubmit').click(function () {
+
+             
+                    //data adalah form data yang berisi file dan tanggal
+                    var data = new FormData();
+                    data.append('StockID', $('#txtStockID').val());
+                    data.append('Action', $('#optAction').val());
+                    data.append('StartDate', $('#txtStartDate').val());
+                    data.append('EndDate', $('#txtEndDate').val());
+                    data.append('OldRatio', $('#txtOldRatio').val());
+                    data.append('NewRatio', $('#txtNewRatio').val());
+                    data.append('NewPrice', $('#txtNewPrice').val());
+                    $(this).prop('disabled', true);
+
+
+                    $('#mask').show();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/CorporateAction/StockPriceAdjustment/',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        //contentType: 'application/json',
+                        //cache: false,
+                        success: function (result) {
+                            //$('#List').unmask("waiting ...");
+                            //load returned data inside contentFrame DIV
+                            //alert(result);
+                            if (result) {
+                                //$('#spanValidation').text(result);
+
+                                if (result.substring(0, 2) == "I-")
+                                    displayModal('Information', result.substring(2), '/Common/ShowModal/');
+                                else
+                                    displayModal('Error', result.substring(2), '/Common/ShowModal/');
+                            }
+                            else {
+                                //alert(result);
+                                displayModal('Error', 'Upload successful', '/Common/ShowModal/');
+
+                            }
+                            //$('#mask').hide();
+
+                            //$('.spinner').hide();
+                            $('#mask').hide();
+                            $('#btnSubmit').prop('disabled', false);
+                        }
+                    });
+
+                });
+
+
+            });
+
+
+    </script>
+
+}

@@ -1,0 +1,122 @@
+﻿html * {
+    box-sizing: border-box;
+}
+
+#chart {
+   width: 100%;
+   height:645px;  /*kita lebihkan 10px*/
+    position: relative;
+}
+
+.chart .axis text {
+    font: 10px sans-serif;
+}
+
+
+
+.chart .axis .domain,
+.chart .axis .tick line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.chart .gridlines {
+    stroke: lightgrey;
+    shape-rendering: crispEdges;
+    stroke-width: 1;
+}
+
+.chart .ohlc-series path {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1.5;
+}
+
+.chart .ohlc-series .up-days {
+    stroke: green;
+}
+
+.chart .ohlc-series .down-days {
+    stroke: red;
+}
+
+.chart .ohlc-series .bar.up-day {
+    stroke: green;
+}
+
+.chart .ohlc-series .bar.down-day {
+    stroke: red;
+}
+
+.chart .candlestick-series .bar path {
+    stroke: black;
+}
+
+.chart .comparison-series .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+    vector-effect: non-scaling-stroke;
+}
+
+.chart .bar.up-day rect {
+    fill: green;
+}
+
+.chart .bar.down-day rect {
+    fill: red;
+}
+.lineR{
+	stroke: steelblue;
+	fill: none;
+}
+
+.lineS{
+	stroke: red;
+	fill: none;
+}
+.bb{
+	stroke: LightGrey;
+	fill: LightGrey;
+	opacity : 0.5;
+}
+.gsline{
+	stroke: Red;
+	fill: none;
+	opacity : 1;
+}
+.chart .zoom-pane {
+    fill: none;		
+    pointer-events: all;
+    /*cursor: -webkit-grab;
+    cursor: -moz-grab;*/
+    cursor: crosshair;
+}
+			.plus { fill : green; }
+			.plus-tr { fill : green; opacity:0.3}
+			.minus { fill : red; }
+			.minus-tr { fill : red;opacity:0.3 }
+			.same { stroke : black;
+					stroke-width: 1	;
+					}
+			.highlowline-green{stroke : green;}
+			.highlowline-red{stroke : red;}
+			.highlowline-black{stroke : black;}
+			
+			
+			.svg-container {
+					display: inline-block;
+					position: relative;
+					width: 100%;
+					padding-bottom: 100%; /* aspect ratio */
+					vertical-align: top;
+					overflow: hidden;
+				}
+			.svg-content-responsive {
+			
+				display: inline-block;
+				position: absolute;
+				top: 10px;
+				left: 0;
+                }
+
