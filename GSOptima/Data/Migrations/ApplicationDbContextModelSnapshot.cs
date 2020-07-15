@@ -179,6 +179,24 @@ namespace GSOptima.Data.Migrations
                     b.ToTable("StockWatchList");
                 });
 
+            modelBuilder.Entity("GSOptima.Models.GSProWatchList", b =>
+            {
+                b.Property<string>("StockID");
+
+                b.Property<decimal?>("Target1");
+
+                b.Property<decimal?>("Target2");
+
+                b.HasKey("StockID");
+
+                b.HasIndex("StockID");
+
+                b.ToTable("GSProWatchList");
+            });
+
+            
+
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -308,6 +326,14 @@ namespace GSOptima.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("GSOptima.Models.GSProWatchList", b =>
+            {
+                b.HasOne("GSOptima.Models.Stock", "Stocks")
+                    .WithMany("GSProWatchList")
+                    .HasForeignKey("StockID")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+            
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")

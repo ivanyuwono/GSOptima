@@ -96,5 +96,15 @@ namespace GSOptima.Models
  
     }
 
+    public class GSProWatchList
+    {
+        [Key]
+        public string StockID { get; set; }
+        public Decimal? Target1 { get; set; }
+        public Decimal? Target2 { get; set; }
+        [ForeignKey("StockID")]
+        public Stock Stocks { get; set; }
 
     }
+
+}
