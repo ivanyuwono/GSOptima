@@ -87,7 +87,7 @@
                             <ul class="dropdown-menu">
                                 <li><a asp-controller="GSProWatchList" asp-action="Index">Watch List</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a asp-area="" asp-controller="GSProWatchList" asp-action="Journal">Trading Journal</a></li>
+                                <li><a asp-area="" asp-controller="GSProJournal" asp-action="Journal">Trading Journal</a></li>
 
                             </ul>
                         </li>
@@ -104,6 +104,7 @@
                                 <li><a asp-area="" asp-controller="StockPrices" asp-action="DailyUpload">Stock Prices Upload</a></li>
                                 <li><a asp-area="" asp-controller="StockPrices" asp-action="DownloadData">Download Data</a></li>
                                 <li><a asp-area="" asp-controller="CorporateAction" asp-action="Index">Corporate Action</a></li>
+                                <li><a asp-controller="GSProAdminWatchList" asp-action="Index">Admin Watch List</a></li>
                             </ul>
                         </li>
                     }

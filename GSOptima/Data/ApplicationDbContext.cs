@@ -31,6 +31,6 @@ namespace GSOptima.Data
         public DbSet<StockPrice> StockPrice { get; set; }
         public DbSet<StockWatchList> StockWatchList { get; set; }
 
-        public DbSet<GSProWatchList> GSProWatchList { get; set; }
+        public DbSet<GSProAdminWatchList> GSProAdminWatchList { get; set; }
     }
 }

@@ -46,6 +46,15 @@ namespace GSOptima.ViewModels
         public string LastTrendBar { get; set; }
 
     }
+
+    public class GSProAdminWatchListViewModel
+    {
+        public string StockID { get; set; }
+        [DisplayFormat(DataFormatString = "{0:#,0}", ApplyFormatInEditMode = true)]
+        public Decimal? Target1 { get; set; }
+        [DisplayFormat(DataFormatString = "{0:#,0}", ApplyFormatInEditMode = true)]
+        public Decimal? Target2 { get; set; }
+    }
     public class ChartViewModel
     {
 

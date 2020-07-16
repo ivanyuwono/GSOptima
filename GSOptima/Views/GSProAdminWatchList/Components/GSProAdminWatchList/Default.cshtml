@@ -1,0 +1,78 @@
+﻿@using GSOptima.ViewModels
+@using GSOptima.Services
+@using GSOptima.Code
+@model Paging<GSOptima.Models.GSProAdminWatchList>
+
+@inject ScreeningUIService svc
+
+@functions{
+
+}
+
+@{
+    System.Globalization.NumberFormatInfo nfi = new System.Globalization.CultureInfo("id-ID").NumberFormat;
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyGroupSeparator = ".";
+    nfi.CurrencyDecimalSeparator = ",";
+}
+@*@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })*@
+
+
+@*currentPage, gotoPage, totalPage, sort, filter, nowsort, url, divName*@
+@*<div class="table-responsive" data-pattern="priority-columns" data-add-focus-btn="false" >*@  
+    <table class="table table-footable  table-condensed footable" id="tbl">
+        <thead>
+            <tr>
+
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "StockID", columnText = "Stock" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Target1", columnText = "Target 1" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Target2", columnText = "Target 2" })
+
+                @*<th data-breakpoints="">Chart</th>*@
+                <th data-breakpoints="xs">Delete</th>
+            </tr>
+        </thead>
+        <tbody style="color: black">
+            @foreach (var item in Model.data)   
+            {
+            <tr>
+
+                <td data-label="Stock Code">
+                    @Html.DisplayFor(modelitem => item.StockID)
+                </td>
+                <td data-label="Target 1">
+                    @if (item.Target1.HasValue)
+                    {
+                        @item.Target1.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+                </td>
+                <td data-label="Target 2">
+                    @if (item.Target2.HasValue)
+                    {
+                        @item.Target2.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+                </td>
+           
+                <td>
+                    <a id="btnDelete" class="btn btn-danger btnDelete" value="@item.StockID">
+                        @*<span class="glyphicon glyphicon-trash"></span>Delete*@
+                        <i class="fa fa-trash-o  fa-lg fa-fw" aria-hidden="false"></i>
+                    </a>
+
+                </td>
+            </tr>
+             
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="16">
+                    @await Component.InvokeAsync("Paging", new { pagingAttribute = Model.attribute })
+                  </td>
+            </tr>
+
+        
+        </tfoot>
+    </table>
+@*</div>*@

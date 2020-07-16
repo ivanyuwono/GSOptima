@@ -61,22 +61,33 @@
                 <ul class="nav navbar-nav">
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
                     @*<li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
+        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
                     @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAuthenticatedUser")).Succeeded)
                     {
                         @*<li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a asp-controller="StockChart" asp-action="Index">Chart</a></li>
-                                    <li><a asp-area="" asp-controller="StockWatchList" asp-action="Index">Watchlist</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a  asp-controller="StockScreening" asp-action="Index">Screening</a></li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a asp-controller="StockChart" asp-action="Index">Chart</a></li>
+                    <li><a asp-area="" asp-controller="StockWatchList" asp-action="Index">Watchlist</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a  asp-controller="StockScreening" asp-action="Index">Screening</a></li>
 
-                                </ul>
-                            </li>*@
+                </ul>
+            </li>*@
                         <li><a asp-controller="StockChart" asp-action="Index">Chart</a></li>
                         <li><a asp-controller="StockScreening" asp-action="Index">Screening</a></li>
                         <li><a asp-area="" asp-controller="StockWatchList" asp-action="Index">Watchlist</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">GS Pro <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="GSProWatchList" asp-action="Index">Watchlist</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a asp-area="" asp-controller="GSProJournal" asp-action="Journal">Trading Journal</a></li>
+
+                            </ul>
+                        </li>
+
 
                     }
                     @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
@@ -90,6 +101,7 @@
                                 <li><a asp-area="" asp-controller="StockPrices" asp-action="DailyUpload">Stock Prices Upload</a></li>
                                 <li><a asp-area="" asp-controller="StockPrices" asp-action="DownloadData">Download Data</a></li>
                                 <li><a asp-area="" asp-controller="CorporateAction" asp-action="Index">Corporate Action</a></li>
+                                <li><a asp-controller="GSProAdminWatchList" asp-action="Index">Admin Watchlist</a></li>
                             </ul>
                         </li>
                     }

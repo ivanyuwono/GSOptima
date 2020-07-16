@@ -179,7 +179,7 @@ namespace GSOptima.Data.Migrations
                     b.ToTable("StockWatchList");
                 });
 
-            modelBuilder.Entity("GSOptima.Models.GSProWatchList", b =>
+            modelBuilder.Entity("GSOptima.Models.GSProAdminWatchList", b =>
             {
                 b.Property<string>("StockID");
 
@@ -191,7 +191,7 @@ namespace GSOptima.Data.Migrations
 
                 b.HasIndex("StockID");
 
-                b.ToTable("GSProWatchList");
+                b.ToTable("GSProAdminWatchList");
             });
 
             
@@ -326,10 +326,10 @@ namespace GSOptima.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("GSOptima.Models.GSProWatchList", b =>
+            modelBuilder.Entity("GSOptima.Models.GSProAdminWatchList", b =>
             {
                 b.HasOne("GSOptima.Models.Stock", "Stocks")
-                    .WithMany("GSProWatchList")
+                    .WithMany("GSProAdminWatchList")
                     .HasForeignKey("StockID")
                     .OnDelete(DeleteBehavior.Cascade);
             });

@@ -96,7 +96,7 @@ namespace GSOptima.Models
  
     }
 
-    public class GSProWatchList
+    public class GSProAdminWatchList
     {
         [Key]
         public string StockID { get; set; }
