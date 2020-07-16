@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Threading;
 using Microsoft.AspNetCore.Authorization;
+using GSOptima.ViewComponents;
 
 namespace GSOptima.Controllers
 {
@@ -146,16 +147,18 @@ namespace GSOptima.Controllers
 
             using (var streamWriter = new StreamWriter(stream, Encoding.UTF8))
             {
-                var header = "Date;Stock;Open;High;Low;Close;Resist;Support;GSLine";
+                var header = "Date;Stock;Open;High;Low;Close;Resist;Support;GSLine;Trend";
                 streamWriter.WriteLine(header);
                 foreach (var stock in await _context.Stock.ToListAsync())
                 {
                     var lastPrice = await _context.StockPrice.Where(m => m.StockID == stock.StockID).OrderByDescending(x=>x.Date).FirstOrDefaultAsync();
                     var line = "";
+                    var trend = Screening.DetermineTrendByWord(lastPrice);
+
                     if (lastPrice != null)
-                        line = lastPrice.Date.ToString("yyyy/MM/dd") + ";" + stock.StockID + ";" + lastPrice.Open + ";" + lastPrice.High + ";" + lastPrice.Low + ";" + lastPrice.Close + ";" + lastPrice.Resistance + ";" + lastPrice.Support + ";" + lastPrice.GSLineDirection;
+                        line = lastPrice.Date.ToString("yyyy/MM/dd") + ";" + stock.StockID + ";" + lastPrice.Open + ";" + lastPrice.High + ";" + lastPrice.Low + ";" + lastPrice.Close + ";" + lastPrice.Resistance + ";" + lastPrice.Support + ";" + lastPrice.GSLineDirection + ";" + trend ;
                     else
-                        line = lastPrice.Date.ToString("yyyy/MM/dd") + ";" + stock.StockID + ";0;0;0;0;0;0;0";
+                        line = lastPrice.Date.ToString("yyyy/MM/dd") + ";" + stock.StockID + ";0;0;0;0;0;0;0;0";
 
                     streamWriter.WriteLine(line);
      

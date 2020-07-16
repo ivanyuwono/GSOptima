@@ -109,9 +109,33 @@ namespace GSOptima.ViewComponents
                 else
                     return "N/A";
             }
+        }
+        public static string DetermineTrendByWord(StockPrice x)
+        {
+
+            if (x.MA20 == null || x.MA60 == null)
+                return "N/A";
+            else
+            {
+                if (x.Close >= x.MA20 && x.MA20 >= x.MA60)
+                    return "Strong Uptrend"; //blue
+                else if (x.MA20 >= x.Close && x.Close >= x.MA60)
+                    return "Uptrend"; //green
+                else if (x.MA20 >= x.MA60 && x.MA60 >= x.Close)
+                    return "Downtrend"; //indian red
+                else if (x.MA60 >= x.MA20 && x.MA20 >= x.Close)
+                    return "Strong Downtrend";  //dark red
+                else if (x.MA60 >= x.Close && x.Close >= x.MA20)
+                    return "Neutral"; //white
+                else if (x.Close >= x.MA60 && x.MA60 >= x.MA20)
+                    return "Uptrend"; //green
+                else
+                    return "N/A";
+            }
 
 
         }
+
         public static string DetermineNormalRange(StockPrice x)
         {
 
