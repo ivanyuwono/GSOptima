@@ -1,0 +1,403 @@
+﻿@using GSOptima.ViewModels
+@using GSOptima.Services
+@using GSOptima.Code
+@model Paging<GSOptima.ViewModels.GSProWatchListViewModel>
+
+@inject ScreeningUIService svc
+
+@functions{
+
+
+//public string DisplayTradingPlanColor(string plan)
+//{
+//    if (plan == "Buy")
+//        return "LightGreen";
+//    else if (plan == "Hold")
+//        return "LightSkyBlue";
+//    else if (plan == "Watch")
+//        return "Yellow";
+//    else if (plan == "Sell")
+//        return "IndianRed";
+//    else
+//        return "White";
+
+//}
+//public string DisplayRiskColor(string risk)
+//{
+//    if (risk == "1")
+//        return "LightSkyBlue";
+//    else if (risk == "2")
+//        return "LightGreen";
+//    else if (risk == "3")
+//        return "IndianRed";
+//    else
+//        return "White";
+
+//}
+
+//public string DisplayTrendColor(string trend)
+//{
+
+//    if (trend == "1")
+//        return "LightSkyBlue";
+//    else if (trend == "2")
+//        return "LightGreen";
+//    else if (trend == "3")
+//        return "LightGreen";
+//    else if (trend == "4")
+//        return "White";
+//    else if (trend == "5")
+//        return "IndianRed";
+//    else if (trend == "6")
+//        return "Firebrick";
+//    else
+//        return "White";
+//}
+
+//public string DisplayTrend(string trend)
+//{
+
+//    if (trend == "1")
+//        return "Strong Up";
+//    else if (trend == "2")
+//        return "Uptrend";
+//    else if (trend == "3")
+//        return "Uptrend";
+//    else if (trend == "4")
+//        return "Neutral";
+//    else if (trend == "5")
+//        return "Downtrend";
+//    else if (trend == "6")
+//        return "Strong Down";
+//    else
+//        return "N/A";
+//}
+
+//public string DisplayBigWave(bool bigwave)
+//{
+//    if (bigwave)
+//        return "Detected";
+//    else
+//        return "";
+//}
+//public string DisplayBigWaveColor(bool bigwave)
+//{
+//    if (bigwave)
+//        return "Yellow";
+//    else
+//        return "White";
+//}
+
+//public string DisplayBuyLimitColor(string plan)
+//{
+
+//    if (plan == "Buy")
+//        return "LightGreen";
+//    else if (plan == "Hold")
+//        return "White";
+//    else if (plan == "Watch")
+//        return "White";
+//    else
+//        return "White";
+//}
+//public string DisplayCloseToResistColor(Decimal? percentage)
+//{
+//    if (percentage == null)
+//        return "White";
+
+//    if (percentage > -3 && percentage <= (decimal)0.0)
+//        return "LightSkyBlue";
+//    else if (percentage > 0 && percentage <= (decimal)3.0)
+//        return "LightGreen";
+//    else
+//        return "White";
+//}
+
+//public string DisplayCloseToSupportColor(Decimal? percentage)
+//{
+//    if (percentage == null)
+//        return "White";
+
+//    if (percentage >= 0 && percentage <= (decimal)3.0)
+//        return "IndianRed";
+//    else
+//        return "White";
+//}
+//public string DisplayNormalRangeColor(string direction)
+//{
+//    if (direction == "U")
+//        return "IndianRed";
+//    else if (direction == "D")
+//        return "LightGreen";
+//    else
+//        return "White";
+//}
+
+//public string DisplayNormalRange(string direction)
+//{
+//    if (direction == "U")
+//        return "Above Normal";
+//    else if (direction == "D")
+//        return "Below Normal";
+//    else
+//        return "";
+//}
+
+//public string DisplayGSLineDirection(string direction)
+//{
+//    if (direction == "U")
+//        return "Positive";
+//    else if (direction == "D")
+//        return "Negative";
+//    else
+//        return "Neutral";
+//}
+//public string DisplayGSLineDirectionColor(string direction)
+//{
+//    if (direction == "U")
+//        return "LightGreen";
+//    else if (direction == "D")
+//        return "IndianRed";
+//    else
+//        return "White";
+//}
+
+//public string DisplayLastTrendBar(string last)
+//{
+//    string[] part = last.Split(';');
+//    if (last.Contains("H") && last.Contains("L"))
+//    {
+//        //return part[1].ToString() + " Green " + part[3].ToString() + " Low ";
+//        return "Green";
+//    }
+//    else if (last.Contains("H"))
+//    {
+//        //return part[1].ToString() + " Green";
+//        return "Green";
+//    }
+//    else if (last.Contains("L"))
+//    {
+//        //return part[1].ToString() + " Red";
+//        return "Red";
+//    }
+//    else
+//        return "";
+
+
+//}
+
+//public string DisplayLastTrendBarColor(string last)
+//{
+//    string[] part = last.Split(';');
+//    if (last.Contains("H") && last.Contains("L"))
+//    {
+//        //return part[1].ToString() + " Green " + part[3].ToString() + " Red ";
+//        return "LightGreen";
+//    }
+//    else if (last.Contains("H"))
+//    {
+//        //return part[1].ToString() + " Green";
+//        return "LightGreen";
+//    }
+//    else if (last.Contains("L"))
+//    {
+//        //return part[1].ToString() + " Red";
+//        return "Firebrick";
+//    }
+//    else
+//        return "";
+
+//}
+
+//public string DisplayRiskLevel(string risk)
+//{
+//    if (risk == "1")
+//        return "Low";
+//    else if (risk == "2")
+//        return "Medium";
+//    else if (risk == "3")
+//        return "High";
+//    else
+//        return "N/A";
+//}
+}
+
+@{
+    System.Globalization.NumberFormatInfo nfi = new System.Globalization.CultureInfo("id-ID").NumberFormat;
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyGroupSeparator = ".";
+    nfi.CurrencyDecimalSeparator = ",";
+}
+@*@Html.Partial("_Modal", new BootstrapModel { Size = ModalSize.Large })*@
+
+
+@*currentPage, gotoPage, totalPage, sort, filter, nowsort, url, divName*@
+@*<div class="table-responsive" data-pattern="priority-columns" data-add-focus-btn="false" >*@  
+    <table class="table table-footable  table-condensed footable" id="tbl">
+        <thead>
+            <tr>
+
+
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "BigWave", columnText = "Big Wave", dataBreakpoint = "xs sm" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "RiskProfile", columnText = "Risk Level", dataBreakpoint = "xs" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "StockID", columnText = "Stock" })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "TradingPlan", columnText = "Trading Plan", dataBreakpoint = "" })
+
+
+                @*@await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Open", columnText = "Open", dataBreakpoint="all" })
+        @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "High", columnText = "High", dataBreakpoint = "all" })
+        @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Low", columnText = "Low", dataBreakpoint =     "all" })*@
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Close", columnText = "Close", dataBreakpoint = "xs sm" })
+                @*@await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Volume", columnText = "Volume", dataBreakpoint = "xs sm md lg" })*@
+
+
+
+                @*@await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Close", columnText = "Close", dataBreakpoint = "xs sm" })*@
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Resistance", columnText = "Resist", dataBreakpoint = "xs sm " })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Support", columnText = "Support", dataBreakpoint = "xs sm " })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "BuyLimit", columnText = "Buy Limit", dataBreakpoint = "xs sm " })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "CloseToResistance", columnText = "% To Resist", dataBreakpoint = "xs sm " })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "CloseToSupport", columnText = "% To Support", dataBreakpoint = "xs sm " })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "GSLine", columnText = "GS Line", dataBreakpoint = "xs" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Trend", columnText = "Trend Color", dataBreakpoint = "" })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "LastTrendbar", columnText = "Trend Bar", dataBreakpoint = "" })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "NormalRange", columnText = "Normal Range", dataBreakpoint = "xs sm " })
+
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Target1", columnText = "Target 1", dataBreakpoint = "xs sm " })
+                @await Html.PartialAsync("_TableHeader", new TableHeader() { pagingAttribute = Model.attribute, sortBy = "Target2", columnText = "Target 2", dataBreakpoint = "xs sm " })
+
+
+                <th data-breakpoints="">Chart</th>
+
+            </tr>
+        </thead>
+        <tbody style="color: black">
+            @foreach (var item in Model.data)   
+            {
+            <tr>
+
+                <td class="@svc.DisplayBigWaveColor(item.BigWave)">
+                    @svc.DisplayBigWave(item.BigWave)
+                </td>
+
+                <td class="@svc.DisplayRiskColor(item.RiskProfile)">
+                    @*@Html.DisplayFor(modelitem => item.RiskProfile)*@
+                    @svc.DisplayRiskLevel(item.RiskProfile)
+                </td>
+
+                <td data-label="Stock Code">
+                    @Html.DisplayFor(modelitem => item.StockID)
+                </td>
+
+                <td class="@svc.DisplayTradingPlanColor(item.TradingPlan)">
+                    @Html.DisplayFor(modelitem => item.TradingPlan)
+                </td>
+
+                <td data-label="Close">
+                    @if (item.Close.HasValue)
+                    {
+                        @item.Close.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+                </td>
+           
+                <td>
+                    @if (item.Resistance.HasValue)
+                    {
+                        @item.Resistance.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+
+                </td>
+                <td>
+                    @if (item.Support.HasValue)
+                    {
+                        @item.Support.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+
+                </td>
+                <td class="@svc.DisplayBuyLimitColor(item.TradingPlan)">
+                    @if (item.BuyLimit.HasValue)
+                    {
+                        @item.BuyLimit.Value.ToString("###,###,###,##0.##", nfi)
+                    }
+
+                </td>
+
+                <td class="@svc.DisplayCloseToResistColor(item.CloseToResistance)">
+                    @*@Html.DisplayFor(modelitem => item.CloseToResistance)%*@
+                    @if (item.CloseToResistance.HasValue)
+                    {
+                        @(item.CloseToResistance.Value.ToString("##0.##",nfi))
+                        @Html.Raw("%")
+
+                    }
+
+                </td>
+                <td class="@svc.DisplayCloseToSupportColor(item.CloseToSupport)">
+                    @*@Html.DisplayFor(modelitem => item.CloseToSupport)%*@
+                    @if (item.CloseToSupport.HasValue)
+                    {
+                        @(item.CloseToSupport.Value.ToString("##0.##", nfi))
+                        @Html.Raw("%")
+
+                    }
+                </td>
+
+                <td class="@svc.DisplayGSLineDirectionColor(item.GSLineDirection)">
+                    @svc.DisplayGSLineDirection(item.GSLineDirection)
+                </td>
+
+                <td class="@svc.DisplayTrendColor(item.Trend)">
+                    @svc.DisplayTrend(item.Trend)
+                </td>
+                <td class="@svc.DisplayLastTrendBarColor(item.LastTrendBar)">
+                    @svc.DisplayLastTrendBar(item.LastTrendBar)
+                </td>
+
+                <td class="@svc.DisplayNormalRangeColor(item.NormalRange)">
+                    @svc.DisplayNormalRange(item.NormalRange)
+                </td>
+
+
+                <td class="">
+                    @*@Html.DisplayFor(modelitem => item.CloseToSupport)%*@
+                    @if (item.Target1.HasValue)
+                    {
+                        @(item.Target1.Value.ToString("###,###,###,##0.##", nfi))
+                    }
+                </td>
+                <td class="">
+                    @*@Html.DisplayFor(modelitem => item.CloseToSupport)%*@
+                    @if (item.Target2.HasValue)
+                    {
+                        @(item.Target2.Value.ToString("###,###,###,##0.##", nfi))
+                    }
+                </td>
+                <td>
+                    @*Untuk menggunakan modal form dan dan link jangan lupa menambah partial view untuk modal*@
+                    <a data-toggle="modal" asp-controller="StockChart" asp-action="DisplayChart" asp-route-stockID="@item.StockID" asp-route-numberOfDays="180" data-target="#modal-container" asp-route-isModalDialog="true" class="btn btn-primary">
+                        @*<i class="glyphicon glyphicon-stats"></i>*@
+                        <i class="fa fa-line-chart fa-lg fa-fw" aria-hidden="false"></i>
+                    </a>
+
+                </td>
+            </tr>
+             
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+
+                <td colspan="16">
+                    @await Component.InvokeAsync("Paging", new { pagingAttribute = Model.attribute })
+                  </td>
+            </tr>
+
+          
+        </tfoot>
+    </table>
+@*</div>*@

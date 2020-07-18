@@ -103,7 +103,7 @@ namespace GSOptima.Models
         public Decimal? Target1 { get; set; }
         public Decimal? Target2 { get; set; }
         [ForeignKey("StockID")]
-        public Stock Stocks { get; set; }
+        public Stock Stock { get; set; }
 
     }
 

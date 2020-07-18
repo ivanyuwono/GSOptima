@@ -519,8 +519,7 @@ namespace GSOptima.Controllers
         //[SessionTimeout]
         public async Task<IActionResult> EditUser(string id, string returnUrl = "Index")
         {
-            //var email = id;
-
+            
             ViewData["ReturnUrl"] = returnUrl;
 
             if (id == null)

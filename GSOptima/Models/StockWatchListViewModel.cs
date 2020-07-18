@@ -46,7 +46,11 @@ namespace GSOptima.ViewModels
         public string LastTrendBar { get; set; }
 
     }
-
+    public class GSProWatchListViewModel : WatchList
+    {
+        public Decimal? Target1 {get;set;}
+        public Decimal? Target2 { get; set; }
+    }
     public class GSProAdminWatchListViewModel
     {
         public string StockID { get; set; }
